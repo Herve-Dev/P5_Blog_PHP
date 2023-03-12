@@ -29,6 +29,11 @@ class UserModel extends Model
         return $this->request("SELECT * FROM user WHERE email = ?", [$email])->fetch();
     }
     
+    public function updateAuthUser(string $email)
+    {
+        return $this->request('UPDATE user SET authenticated = true WHERE email = ?', [$email]);
+    }
+
     /**
      * Get the value of id
      */ 

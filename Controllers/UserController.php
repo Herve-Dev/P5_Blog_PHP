@@ -70,11 +70,18 @@ class UserController extends Controller
             if ($passHash === false) {
                 return $passHash;
             } else {
+
+                $newUser = new UserModel;
+                $newUser->setUsername($username)
+                    ->setEmail($email)
+                    ->setPassword($passHash);
+                
+                //On stock l'utilisateur
+                $newUser->create();
+
                 $cryptParamURL = Utils::encodeMailURL($email);
                 $sendMail = new SendMail;
                 $sendMail->sendmailAuth($email, $cryptParamURL);
-
-                
             }
 
 

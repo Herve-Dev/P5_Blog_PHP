@@ -14,7 +14,7 @@ class SendMail
 
         try {
             //configuration
-            $mail->SMTPDebug = SMTP::DEBUG_SERVER; // je veux des informations de debug
+            //$mail->SMTPDebug = SMTP::DEBUG_SERVER; // je veux des informations de debug
 
             // On configure le SMTP
             $mail->isSMTP();
