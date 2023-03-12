@@ -19,6 +19,21 @@ class UserModel extends Model
     }
 
     /**
+     * crée la session de l'utilisateur
+     *
+     * @return void
+     */
+    public function setSession()
+    {
+        $_SESSION['user'] = [
+            'id' => $this->id,
+            'username' => $this->username,
+            'email' => $this->email,
+            'role' => $this->role
+        ];
+    }
+
+    /**
      * Récupérer un user à partir de son e-mail
      *
      * @param string $email
@@ -29,6 +44,11 @@ class UserModel extends Model
         return $this->request("SELECT * FROM user WHERE email = ?", [$email])->fetch();
     }
     
+    /**
+     * Fonction mise à jour colonne authenticated
+     *
+     * @param string $email
+     */
     public function updateAuthUser(string $email)
     {
         return $this->request('UPDATE user SET authenticated = true WHERE email = ?', [$email]);

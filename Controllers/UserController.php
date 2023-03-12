@@ -15,6 +15,41 @@ class UserController extends Controller
      */
     public function login()
     {
+       //On verifie si le formulaire est complet 
+       if (Form::validate($_POST, ['email','password'])) {
+            //Le formulaire est complet 
+            //On va chercher dans la base de données l'utilisateur avec l'email entré
+
+            $userModel = new UserModel;
+            $userArray = $userModel->findOneByEmail(strip_tags($_POST['email']));
+
+            //Si l'utilisateur n'existe pas 
+            if (!$userArray) {
+                // On envoie un message de session
+                $_SESSION['error'] = "l'adresse e-mail et/ou le mot de passe est incorrect";
+                header('Location: user/login');
+                exit;
+            }
+
+            // L'utilisateur existe
+            $user = $userModel->hydrate($userArray);
+            
+            // On vérifie si le mot de passe est correct
+            if (password_verify($_POST['password'], $user->getPassword())) {
+                //Le mot de passe est bon 
+                // On crée la session
+                $user->setSession();
+                header('Location: /');
+                exit;
+            }else{
+                // Mauvais mot de passe 
+                $_SESSION['error'] = "l'adresse e-mail et/ou le mot de passe est incorrect";
+                header('Location: /user/login');
+                exit;
+            }
+
+       }
+
         $form = new Form;
 
         // Exemple de creation d'un form |$form->startForm('get ou post', 'login.php', ['class' => 'test', 'id' => 'test build'])
@@ -71,6 +106,13 @@ class UserController extends Controller
                 return $passHash;
             } else {
 
+                /**
+                 * Penser à mettre une verification supplementaire 
+                 * pour savoir si l'utilisateur est déja inscrit 
+                 * ainsi qu'une verif pour savoir si l'username est déja utilisé
+                 * et une verif pour un mot de passe plus fort
+                 */
+
                 $newUser = new UserModel;
                 $newUser->setUsername($username)
                     ->setEmail($email)
@@ -83,8 +125,17 @@ class UserController extends Controller
                 $sendMail = new SendMail;
                 $sendMail->sendmailAuth($email, $cryptParamURL);
             }
-
-
         }
+    }
+
+    /**
+     * Déconnexion de l'utilisateur
+     *
+     * @return void
+     */
+    public function logout(){
+        unset($_SESSION['user']);
+        header('Location: /');
+        exit;
     }
 }

@@ -27,6 +27,7 @@ class Utils
      */
     public static function encodeMailURL(string $email) 
     {
+        //PENSEZ A METTRE UN TEMPS LIMITE POUR VALIDATION DU LIEN
         $cryptParamUrl = openssl_encrypt($email,"AES-128-ECB", getenv('SECRET_KEY_OPENSSL'));
         $cryptParamUrl = str_replace(['=', '+', '='], [''], $cryptParamUrl);
         return $cryptParamUrl;
