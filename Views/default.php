@@ -12,8 +12,8 @@
 
 <body>
     <nav>
-        <div class="nav-wrapper">
-            <a href="/" class="brand-logo">MON BLOG</a>
+        <div class="nav-wrapper blue darken-3">
+            <a href="/" class="brand-logo ">MON BLOG</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/">Acceuil</a></li>
                 <li><a href="/post">Mes Publications</a></li>
