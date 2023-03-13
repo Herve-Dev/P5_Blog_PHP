@@ -205,4 +205,25 @@ class Form
 
         return $this;
     }
+
+    /**
+     * Ajout input file (css)
+     *
+     * @return self
+     */
+    public function addInputFiles()
+    {
+        $this->formCode .=
+        '<div class="file-field input-field">
+            <div class="btn">
+                <span>Image</span>
+                <input type="file" id="image" name="image">
+            </div>
+            <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" name="image">
+            </div>
+        </div>';
+
+      return $this;
+    }
 }
