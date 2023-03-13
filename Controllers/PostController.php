@@ -46,6 +46,35 @@ class PostController extends Controller
         //On vérifie si lutilisateur est connecté
         if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
             //l'utilisateur est connecté
+
+            if (Form::validate($_POST,['title', 'chapo', 'content'])) {
+                // Le formulaire est complet
+                // On se protège contre les failles XSS
+                // strip_tags, htmlentities, htmlspecialchars
+                $title = strip_tags($_POST['title']);
+                $chapo = strip_tags($_POST['chapo']);
+                $content = strip_tags($_POST['content']);
+
+                var_dump($title);
+
+                // On instancie notre modèle
+                $postModel = new PostModel;
+
+                // On hydrate 
+                $postModel->setTitle($title)
+                    ->setChapo($chapo)
+                    ->setContent($content)
+                    ->setUser_id($_SESSION['user']['id']);
+
+                // On enregistre
+                //$postModel->create();
+
+                //On redirige
+                $_SESSION['message'] = "Votre post a été enregistré avec succès";
+                //header('Location: /');
+                //exit;
+            }
+
             $form = new Form;
 
             $form->startForm()
