@@ -55,8 +55,6 @@ class PostController extends Controller
                 $chapo = strip_tags($_POST['chapo']);
                 $content = strip_tags($_POST['content']);
 
-                var_dump($title);
-
                 // On instancie notre modèle
                 $postModel = new PostModel;
 
@@ -71,8 +69,8 @@ class PostController extends Controller
 
                 //On redirige
                 $_SESSION['message'] = "Votre post a été enregistré avec succès";
-                //header('Location: /');
-                //exit;
+                header('Location: /');
+                exit;
             }
 
             $form = new Form;
