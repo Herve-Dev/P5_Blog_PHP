@@ -74,10 +74,10 @@ class Form
      * @param array $attributs Attributs
      * @return Form
      */
-    public function startForm(string $method = 'post', string $action = '#', array $attributs = []): self
+    public function startForm(string $method = 'post', string $action = '#', array $attributs = [], string $enctype = 'multipart/form-data'): self
     {
         //On crée la balise form
-        $this->formCode .= "<form action='$action' method='$method'";
+        $this->formCode .= "<form action='$action' method='$method' enctype='$enctype'";
 
         //On ajoute les attributs éventuels
         $this->formCode .= $attributs  ? $this->addAttributs($attributs).'>': '>';

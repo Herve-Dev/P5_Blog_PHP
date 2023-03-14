@@ -100,7 +100,6 @@ class UserController extends Controller
             //On compare les mot de passe
             $comparePass = new Utils;
             $passHash = $comparePass->comparePass($pass,$confirmPassword);
-            var_dump($passHash);
             
             if ($passHash === false) {
                 return $passHash;

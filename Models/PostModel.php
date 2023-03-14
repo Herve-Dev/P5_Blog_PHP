@@ -12,6 +12,11 @@ class PostModel extends Model
     protected $createdAt;
     protected $updatedAt;
 
+    public function __construct()
+    {
+        $this->table = 'post';
+    }
+
     /**
      * Get the value of id
      */ 
