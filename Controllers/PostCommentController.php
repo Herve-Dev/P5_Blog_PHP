@@ -28,7 +28,7 @@ class PostCommentController extends Controller
                 // Le formulaire est complet
                 // On se protège contre les failles XSS
                 // strip_tags, htmlentities, htmlspecialchars
-                $comment = strip_tags($_POST['comment']);
+                $comment = strip_tags($_POST['content']);
 
                 //On instancie notre modèle
                 $postCommentModel = new PostCommentModel;
@@ -36,24 +36,25 @@ class PostCommentController extends Controller
                 // On hydrate
                 $postCommentModel->setContent($comment)
                     ->setPost_id($idPost)
-                    ->setUser_id($_SESSION['user']['id']);
+                    ->setUser_id($_SESSION['user']['id'])
+                    ->setCreatedAt(date_create('now', timezone_open('Europe/Paris'))->format('Y-m-d H:i:s'));
 
                 // On enregistre
                 $postCommentModel->create();
 
                 //On redirige
                 $_SESSION['message'] = "Votre commentaire a été enregistré avec succès l'admin l'acceptera après modération";
-                header('Location: /post');
+                header("Location: /post/read/$idPost");
                 exit;
             }
 
             $form = new Form;
 
             $form->startForm()
-                ->addLabelForm('title','Votre commentaire :')
+                ->addLabelForm('content','Votre commentaire :')
                 ->addInput('text', 'content', ['id' => 'comment', 'class' => 'validate'])
 
-                ->addButton('Ajouter un nouveau post',['class' => 'btn waves-effect waves-light'])
+                ->addButton('Ajouter un nouveau commentaire',['class' => 'btn waves-effect waves-light'])
                 ->endForm();
 
 

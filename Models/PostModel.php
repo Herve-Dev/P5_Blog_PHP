@@ -17,6 +17,11 @@ class PostModel extends Model
         $this->table = 'post';
     }
 
+    public function findPostWithcomment(int $id)
+    {
+        return $this->request("SELECT * FROM post INNER JOIN post_comment ON post.id = post_comment.id WHERE post.id = $id");
+    }
+
     /**
      * Get the value of id
      */ 

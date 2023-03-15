@@ -36,7 +36,10 @@ class PostController extends Controller
         $postModel = new PostModel;
 
         //On va chercher 1 post
-        $post = $postModel->find($id);
+        //$post = $postModel->find($id);
+
+        //On cherche les commentaires lier au post
+        $post = $postModel->findPostWithcomment($id);
 
         //On envoie à la vue
         $this->render('post/read', compact('post'));

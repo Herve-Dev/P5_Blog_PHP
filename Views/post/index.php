@@ -14,7 +14,6 @@
                 <div class="card-action">
                     <a href="post/read/<?= $post->id ?>">Lire l'article</a>
                     <a href="post/deletePost/<?= $post->id ?>">Supprimez le post</a>
-                    <a href="Postcomment/addComment/<?= $post->id ?>">Ajouter un commentaire</a>
                 </div>
             </div>
         </div>  
