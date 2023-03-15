@@ -64,9 +64,7 @@ class PostController extends Controller
                     $folder = "../includes/$name";
                     $tempname = $_FILES["image"]["tmp_name"];
                     move_uploaded_file($tempname,$folder);
-
                     $postModel->setImage($name);
-
                 }
 
                 // On hydrate 
@@ -74,9 +72,7 @@ class PostController extends Controller
                     ->setChapo($chapo)
                     ->setContent($content)
                     ->setUser_id($_SESSION['user']['id']);
-
-
-                var_dump($postModel);
+        
                 // On enregistre
                 $postModel->create();
 

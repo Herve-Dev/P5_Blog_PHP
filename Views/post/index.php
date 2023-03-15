@@ -13,6 +13,7 @@
                 </div>
                 <div class="card-action">
                     <a href="post/read <?= $post->id ?>">Lire l'article</a>
+                    <a href="post/deletePost/<?= $post->id ?>">Supprimez le post</a>
                 </div>
             </div>
         </div>  
