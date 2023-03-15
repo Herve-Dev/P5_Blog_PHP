@@ -58,18 +58,30 @@ class PostController extends Controller
                 // On instancie notre modèle
                 $postModel = new PostModel;
 
+                if ($_FILES['image']) {
+                    $name = $_FILES["image"]['name'];
+                    $folder = "../includes/$name";
+                    $tempname = $_FILES["image"]["tmp_name"];
+                    move_uploaded_file($tempname,$folder);
+
+                    $postModel->setImage($name);
+
+                }
+
                 // On hydrate 
                 $postModel->setTitle($title)
                     ->setChapo($chapo)
                     ->setContent($content)
                     ->setUser_id($_SESSION['user']['id']);
 
+
+                var_dump($postModel);
                 // On enregistre
-                //$postModel->create();
+                $postModel->create();
 
                 //On redirige
                 $_SESSION['message'] = "Votre post a été enregistré avec succès";
-                header('Location: /');
+                header('Location: /post');
                 exit;
             }
 
@@ -92,6 +104,93 @@ class PostController extends Controller
                 ->endForm();
 
             $this->render('post/addPost', ['form' => $form->create()]);
+        }
+    }
+
+    /**
+     * Fontion pour modifier un post
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function updatePost(int $id)
+    {
+        //On verifie si l'utilisateur est connecté
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
+            
+            //On va vérifier si le post existe dans la base
+            // On instancie notre modèle
+            $postModel = new PostModel;
+
+            //On cherche l'annonce avec l'id
+            $post = $postModel->find($id);
+
+            //Si l'annonce n'existe pas, on retourne à la liste des posts
+            if (!$post) {
+                http_response_code(404);
+                $_SESSION['error'] = "Le post recherché n'existe pas";
+                header('Location: /post');
+                exit;
+            }
+
+            // On vérifie si l'utilisateur est propriétaire du post
+            if ($post->user_id !== $_SESSION['user']['id']) {
+                $_SESSION['error'] = "Vous n'avez pas accès à cette page";
+                header('Location: /post');
+                exit;
+            }
+
+            // On traite le formulaire 
+            if (Form::validate($_POST, ['title', 'chapo', 'content'])) {
+                // On se protège contre les failles XSS
+                $title = strip_tags($_POST['title']);
+                $chapo = strip_tags($_POST['chapo']);
+                $content = strip_tags($_POST['content']);
+
+                //On stock le post 
+                $postModif = new PostModel;
+
+                // On hydrate 
+                $postModif->setId($post->id)
+                    ->setTitle($title)
+                    ->setChapo($chapo)
+                    ->setContent($content);
+
+                // On met à jour le post    
+                $postModif->update();
+
+                //On redirige
+                $_SESSION['message'] = "Votre post a été modifié avec succès";
+                header('Location: /post');
+                exit;
+
+            }
+
+            $form = new Form;
+
+            $form->startForm()
+                ->addLabelForm('title','Titre :')
+                ->addInput('text', 'title', ['id' => 'title', 'class' => 'validate', 'value' => $post->title])
+
+                ->addLabelForm('chapo', 'chapô :')
+                ->addInput('text', 'chapo', ['id'=> 'chapo', 'class' => 'validate', 'value' => $post->chapo])
+
+                ->addLabelForm('content', 'contenu :')
+                ->addInput('text', 'content', ['id' => 'content', 'class' => 'validate', 'value' => $post->content])
+
+                ->addLabelForm('image', 'image :')
+                ->addInputFiles()
+
+                ->addButton('mettre à jour le post',['class' => 'btn waves-effect waves-light'])
+                ->endForm();
+
+            // On envoie à la vue 
+            $this->render('post/updatePost', ['form' => $form->create()]);
+
+        } else {
+            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page";
+            header('Location /users/login');
+            exit;
         }
     }
 }

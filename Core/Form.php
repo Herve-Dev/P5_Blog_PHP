@@ -59,7 +59,8 @@ class Form
                 $str .=" $attribut";
             }else {
                 // On ajoute attribut='valeur'
-                $str .=" $attribut='$value'";
+                // On ajoute les "" autour de la valeur pour les ' dans les values
+                $str .=" $attribut=\"$value\"";
             }
         }
 
@@ -176,7 +177,7 @@ class Form
 
         // On ajoute les options
         foreach ($options as $value => $text) {
-            $this->formCode .= "<option value='$value'>$text</optio>";
+            $this->formCode .= "<option value=\"$value\">$text</optio>";
         }
 
         // On ferme le select
