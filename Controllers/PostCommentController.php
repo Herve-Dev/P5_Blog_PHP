@@ -41,11 +41,23 @@ class PostCommentController extends Controller
                 // On enregistre
                 $postCommentModel->create();
 
-                 //On redirige
-                 $_SESSION['message'] = "Votre commentaire a été enregistré avec succès l'admin l'acceptera après modération";
-                 header('Location: /post');
-                 exit;
+                //On redirige
+                $_SESSION['message'] = "Votre commentaire a été enregistré avec succès l'admin l'acceptera après modération";
+                header('Location: /post');
+                exit;
             }
+
+            $form = new Form;
+
+            $form->startForm()
+                ->addLabelForm('title','Votre commentaire :')
+                ->addInput('text', 'content', ['id' => 'comment', 'class' => 'validate'])
+
+                ->addButton('Ajouter un nouveau post',['class' => 'btn waves-effect waves-light'])
+                ->endForm();
+
+
+            $this->render('comment/addComment', ['formComment' => $form->create()]);
         }
     }
 }
