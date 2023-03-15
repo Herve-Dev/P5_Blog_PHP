@@ -159,6 +159,8 @@ class PostController extends Controller
                 // On met à jour le post    
                 $postModif->update();
 
+                var_dump($postModif);
+
                 //On redirige
                 $_SESSION['message'] = "Votre post a été modifié avec succès";
                 header('Location: /post');

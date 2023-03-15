@@ -15,8 +15,6 @@
                     <a href="post/read <?= $post->id ?>">Lire l'article</a>
                 </div>
             </div>
-        </div>
-
-        
+        </div>  
     </div>
 <?php endforeach; ?>
