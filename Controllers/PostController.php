@@ -19,8 +19,9 @@ class PostController extends Controller
         //On va chercher touts les posts
         $post = $postModel->findAll();
 
+
         //On génère la vue
-        $this->render('post/index', ['posts' => $post]);
+        $this->render('post/index', ['posts' => $post ]);
     }
 
     /**
@@ -194,5 +195,18 @@ class PostController extends Controller
             header('Location /users/login');
             exit;
         }
+    }
+
+    /**
+     * Fonction pour supprimez un post
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function deletePost(int $id)
+    {
+        $postDelete = new PostModel;
+        $postDelete->delete($id);
+        header('Location: /');
     }
 }
