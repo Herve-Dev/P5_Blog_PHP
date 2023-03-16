@@ -21,12 +21,14 @@
     <div class="col s12 m6">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
-         <p> ok</p>
+         <p> <?= $post->contentComment ?></p>
         </div>
         <div class="card-action">
-          <a href="#">This is a link</a>
-          <a href="#">This is a link</a>
+          <a href="#">Supprimez mon commentaire</a>
+          <a href="#">Mettre à jour mon commentaire</a>
         </div>
       </div>
     </div>
   </div>
+
+<?php var_dump($post->id_comment) ?>
