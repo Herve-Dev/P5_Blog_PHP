@@ -19,41 +19,15 @@ class PostModel extends Model
 
     public function findPostWithcomment(int $id)
     {
-        $req = $this->request("SELECT * FROM post INNER JOIN comment ON post.id_post = comment.id_comment WHERE post.id_post = ?", [$id])->fetch();
+        $req = $this->request("SELECT * FROM post INNER JOIN comment 
+            ON post.id_post = comment.id_comment INNER JOIN user 
+            ON post.user_id = user.id WHERE post.id_post = ?", [$id])->fetch();
         return $req;
     }
 
     public function findById(int $id)
     {
         return $this->request("SELECT * FROM $this->table WHERE id_post = $id")->fetch();
-    }
-
-    //FONCTION A VOIR IMPORTANT REPETITION 
-    public function updatePostModel()
-    {
-        $fields = [];
-        $values = [];
-
-        //On boucle pour éclater le tableau
-        foreach ($this as $field => $value) {
-            // UPDATE user SET (firstName = ?, lastName = ?, email = ?, biography = ?, avatar = ?, authenticated = ?, role = ?, registeredAt = ? WHERE id = ?)
-            // bindValue(admin, valeur)
-
-            if ($value !== null && $field != 'db' && $field != 'table') {
-                array_push($fields, "$field = ?");
-                array_push($values, $value);
-            }
-        }
-
-        //array_push($values, $this->id);
-        $values[] = $this->id_post; // Erreur à regler
-        var_dump($values);
-        
-        //On transforme le tableau "fields" en une chaine de caractères
-        $fields_list = implode(', ', $fields);
-
-        //On exécute la requete 
-        return $this->request('UPDATE ' . $this->table . ' SET ' . $fields_list . ' WHERE id_post = ?', $values);
     }
 
     /**

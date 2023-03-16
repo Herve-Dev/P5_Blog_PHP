@@ -155,10 +155,12 @@ class PostController extends Controller
                     ->setPost_title($title)
                     ->setPost_Chapo($chapo)
                     ->setPost_Content($content);
+                
+                //Je choisis la colonne concernée      
+                $columnTarget = "id_post";
 
                 // On met à jour le post   
-                $nameWhere = "id_post"; 
-                $postModif->updatePostModel();
+                $postModif->update($post->id_post, $columnTarget);
 
                 var_dump($postModif);
 
@@ -206,7 +208,11 @@ class PostController extends Controller
     public function deletePost(int $id)
     {
         $postDelete = new PostModel;
-        $postDelete->delete($id);
-        header('Location: /');
+
+        //Je choisis la colonne concernée      
+        $columnTarget = "id_post";
+
+        $postDelete->delete($id, $columnTarget);
+        header('Location: /post');
     }
 }

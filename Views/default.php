@@ -49,6 +49,7 @@
                     <ul>
                         <li><a class="grey-text text-lighten-3" href="#!">Linkedin</a></li>
                         <li><a class="grey-text text-lighten-3" href="#!">Github</a></li>
+                        <li><a class="grey-text text-lighten-3" href="#!">Me contacter</a></li>
                     </ul>
                 </div>
             </div>

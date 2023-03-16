@@ -8,6 +8,7 @@
                     <span class="card-title"><?= $post->post_title?></span>
                 </div>
                 <div class="card-content">
+                    <p><?= $post->post_chapo ?></p><br>
                     <p><?= $post->post_content ?></p><br>
                     <p> crée le : <?= $post->post_createdAt ?></p><br>
                 </div>
