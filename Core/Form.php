@@ -218,10 +218,10 @@ class Form
         '<div class="file-field input-field">
             <div class="btn">
                 <span>Image</span>
-                <input type="file" id="image" name="image">
+                <input type="file" id="image" name="post_image">
             </div>
             <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" name="image">
+                <input class="file-path validate" type="text" name="post_image">
             </div>
         </div>';
 

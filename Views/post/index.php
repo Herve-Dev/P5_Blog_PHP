@@ -4,16 +4,16 @@
         <div class="col s12 m7">
             <div class="card">
                 <div class="card-image">
-                    <img src="/includes/<?= $post->image?>">
-                    <span class="card-title"><?= $post->title?></span>
+                    <img src="/includes/<?= $post->post_image?>">
+                    <span class="card-title"><?= $post->post_title?></span>
                 </div>
                 <div class="card-content">
-                    <p><?= $post->content ?></p><br>
-                    <p> crée le : <?= $post->createdAt ?></p><br>
+                    <p><?= $post->post_content ?></p><br>
+                    <p> crée le : <?= $post->post_createdAt ?></p><br>
                 </div>
                 <div class="card-action">
-                    <a href="post/read/<?= $post->id ?>">Lire l'article</a>
-                    <a href="post/deletePost/<?= $post->id ?>">Supprimez le post</a>
+                    <a href="post/read/<?= $post->id_post ?>">Lire l'article</a>
+                    <a href="post/deletePost/<?= $post->id_post ?>">Supprimez le post</a>
                 </div>
             </div>
         </div>  

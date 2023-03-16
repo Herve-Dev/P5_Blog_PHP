@@ -90,8 +90,8 @@ class Model extends Db
 
         //array_push($values, $this->id);
         $values[] = $this->id; // Erreur à regler
+        var_dump($values);
         
-
         //On transforme le tableau "fields" en une chaine de caractères
         $fields_list = implode(', ', $fields);
 

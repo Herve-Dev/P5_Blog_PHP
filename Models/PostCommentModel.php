@@ -13,7 +13,7 @@ class PostCommentModel extends Model
 
     public function __construct()
     {
-        $this->table = 'post_comment';
+        $this->table = 'comment';
     }
 
 

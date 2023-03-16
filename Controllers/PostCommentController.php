@@ -10,6 +10,7 @@ class PostCommentController extends Controller
     {
         // On instancie le modèle correspondant à la table
         $postCommentModel = new PostCommentModel;
+        
 
         //On va chercher touts les commentaires
         $comments = $postCommentModel->findAll();
@@ -24,20 +25,20 @@ class PostCommentController extends Controller
         if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
             //l'utilisateur est connecté
 
-            if (Form::validate($_POST, ['content'])) {
+            if (Form::validate($_POST, ['comment_content'])) {
                 // Le formulaire est complet
                 // On se protège contre les failles XSS
                 // strip_tags, htmlentities, htmlspecialchars
-                $comment = strip_tags($_POST['content']);
+                $comment = strip_tags($_POST['comment_content']);
 
                 //On instancie notre modèle
                 $postCommentModel = new PostCommentModel;
 
                 // On hydrate
-                $postCommentModel->setContent($comment)
+                $postCommentModel->setComment_Content($comment)
                     ->setPost_id($idPost)
                     ->setUser_id($_SESSION['user']['id'])
-                    ->setCreatedAt(date_create('now', timezone_open('Europe/Paris'))->format('Y-m-d H:i:s'));
+                    ->setComment_CreatedAt(date_create('now', timezone_open('Europe/Paris'))->format('Y-m-d H:i:s'));
 
                 // On enregistre
                 $postCommentModel->create();
@@ -51,8 +52,8 @@ class PostCommentController extends Controller
             $form = new Form;
 
             $form->startForm()
-                ->addLabelForm('content','Votre commentaire :')
-                ->addInput('text', 'content', ['id' => 'comment', 'class' => 'validate'])
+                ->addLabelForm('comment_content','Votre commentaire :')
+                ->addInput('text', 'comment_content', ['id' => 'comment', 'class' => 'validate'])
 
                 ->addButton('Ajouter un nouveau commentaire',['class' => 'btn waves-effect waves-light'])
                 ->endForm();

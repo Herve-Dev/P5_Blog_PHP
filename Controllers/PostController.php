@@ -51,13 +51,13 @@ class PostController extends Controller
         if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
             //l'utilisateur est connecté
 
-            if (Form::validate($_POST,['title', 'chapo', 'content'])) {
+            if (Form::validate($_POST,['post_title', 'post_chapo', 'post_content'])) {
                 // Le formulaire est complet
                 // On se protège contre les failles XSS
                 // strip_tags, htmlentities, htmlspecialchars
-                $title = strip_tags($_POST['title']);
-                $chapo = strip_tags($_POST['chapo']);
-                $content = strip_tags($_POST['content']);
+                $title = strip_tags($_POST['post_title']);
+                $chapo = strip_tags($_POST['post_chapo']);
+                $content = strip_tags($_POST['post_content']);
 
                 // On instancie notre modèle
                 $postModel = new PostModel;
@@ -67,13 +67,13 @@ class PostController extends Controller
                     $folder = "../includes/$name";
                     $tempname = $_FILES["image"]["tmp_name"];
                     move_uploaded_file($tempname,$folder);
-                    $postModel->setImage($name);
+                    $postModel->setPost_image($name);
                 }
 
                 // On hydrate 
-                $postModel->setTitle($title)
-                    ->setChapo($chapo)
-                    ->setContent($content)
+                $postModel->setPost_title($title)
+                    ->setPost_chapo($chapo)
+                    ->setPost_content($content)
                     ->setUser_id($_SESSION['user']['id']);
         
                 // On enregistre
@@ -88,16 +88,16 @@ class PostController extends Controller
             $form = new Form;
 
             $form->startForm()
-                ->addLabelForm('title','Titre :')
-                ->addInput('text', 'title', ['id' => 'title', 'class' => 'validate'])
+                ->addLabelForm('post_title','Titre :')
+                ->addInput('text', 'post_title', ['id' => 'title', 'class' => 'validate'])
 
-                ->addLabelForm('chapo', 'chapô :')
-                ->addInput('text', 'chapo', ['id'=> 'chapo', 'class' => 'validate'])
+                ->addLabelForm('post_chapo', 'chapô :')
+                ->addInput('text', 'post_chapo', ['id'=> 'chapo', 'class' => 'validate'])
 
-                ->addLabelForm('content', 'contenu :')
-                ->addInput('text', 'content', ['id' => 'content', 'class' => 'validate'])
+                ->addLabelForm('post_content', 'contenu :')
+                ->addInput('text', 'post_content', ['id' => 'content', 'class' => 'validate'])
 
-                ->addLabelForm('image', 'image :')
+                ->addLabelForm('post_image', 'image :')
                 ->addInputFiles()
 
                 ->addButton('Ajouter un nouveau post',['class' => 'btn waves-effect waves-light'])
@@ -123,7 +123,7 @@ class PostController extends Controller
             $postModel = new PostModel;
 
             //On cherche l'annonce avec l'id
-            $post = $postModel->find($id);
+            $post = $postModel->findById($id);
 
             //Si l'annonce n'existe pas, on retourne à la liste des posts
             if (!$post) {
@@ -141,23 +141,24 @@ class PostController extends Controller
             }
 
             // On traite le formulaire 
-            if (Form::validate($_POST, ['title', 'chapo', 'content'])) {
+            if (Form::validate($_POST, ['post_title', 'post_chapo', 'post_content'])) {
                 // On se protège contre les failles XSS
-                $title = strip_tags($_POST['title']);
-                $chapo = strip_tags($_POST['chapo']);
-                $content = strip_tags($_POST['content']);
+                $title = strip_tags($_POST['post_title']);
+                $chapo = strip_tags($_POST['post_chapo']);
+                $content = strip_tags($_POST['post_content']);
 
                 //On stock le post 
                 $postModif = new PostModel;
 
                 // On hydrate 
-                $postModif->setId($post->id)
-                    ->setTitle($title)
-                    ->setChapo($chapo)
-                    ->setContent($content);
+                $postModif->setId_post($post->id_post)
+                    ->setPost_title($title)
+                    ->setPost_Chapo($chapo)
+                    ->setPost_Content($content);
 
-                // On met à jour le post    
-                $postModif->update();
+                // On met à jour le post   
+                $nameWhere = "id_post"; 
+                $postModif->updatePostModel();
 
                 var_dump($postModif);
 
@@ -171,16 +172,16 @@ class PostController extends Controller
             $form = new Form;
 
             $form->startForm()
-                ->addLabelForm('title','Titre :')
-                ->addInput('text', 'title', ['id' => 'title', 'class' => 'validate', 'value' => $post->title])
+                ->addLabelForm('post_title','Titre :')
+                ->addInput('text', 'post_title', ['id' => 'title', 'class' => 'validate', 'value' => $post->post_title])
 
-                ->addLabelForm('chapo', 'chapô :')
-                ->addInput('text', 'chapo', ['id'=> 'chapo', 'class' => 'validate', 'value' => $post->chapo])
+                ->addLabelForm('post_chapo', 'chapô :')
+                ->addInput('text', 'post_chapo', ['id'=> 'chapo', 'class' => 'validate', 'value' => $post->post_chapo])
 
-                ->addLabelForm('content', 'contenu :')
-                ->addInput('text', 'content', ['id' => 'content', 'class' => 'validate', 'value' => $post->content])
+                ->addLabelForm('post_content', 'contenu :')
+                ->addInput('text', 'post_content', ['id' => 'content', 'class' => 'validate', 'value' => $post->post_content])
 
-                ->addLabelForm('image', 'image :')
+                ->addLabelForm('post_image', 'image :')
                 ->addInputFiles()
 
                 ->addButton('mettre à jour le post',['class' => 'btn waves-effect waves-light'])

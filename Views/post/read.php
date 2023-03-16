@@ -2,16 +2,16 @@
     <div class="col s12 m7">
         <div class="card">
             <div class="card-image">
-                <img src="/includes/<?= $post->image ?>">
-                <span class="card-title"><?= $post->title ?></span>
+                <img src="/includes/<?= $post->post_image ?>">
+                <span class="card-title"><?= $post->post_title ?></span>
             </div>
             <div class="card-content">
-                <p><?= $post->content ?></p><br>
-                <p> crée le : <?= $post->createdAt ?></p><br>
+                <p><?= $post->post_content ?></p><br>
+                <p> crée le : <?= $post->post_createdAt ?></p><br>
             </div>
             <div class="card-action">
-                <a href="/PostComment/addComment/<?= $post->id ?>">Ajouter un commentaire</a>
-                <a href="post/deletePost/<?= $post->id ?>">Supprimez le post</a>
+                <a href="/PostComment/addComment/<?= $post->id_post ?>">Ajouter un commentaire</a>
+                <a href="post/deletePost/<?= $post->id_post ?>">Supprimez le post</a>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
     <div class="col s12 m6">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
-         <p> <?= $post->contentComment ?></p>
+         <p> <?= $post->comment_content ?></p>
         </div>
         <div class="card-action">
           <a href="#">Supprimez mon commentaire</a>
@@ -31,4 +31,3 @@
     </div>
   </div>
 
-<?php var_dump($post->id_comment) ?>
