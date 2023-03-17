@@ -6,6 +6,7 @@
         <span class="card-title"><?= $post->post_title ?></span>
       </div>
       <div class="card-content">
+        <p><?= $post->post_chapo ?></p><br>
         <p><?= $post->post_content ?></p><br>
         <p> crée le : <?= $post->post_createdAt ?></p><br>
         <p> Auteur : <?= $post->username ?></p>
@@ -17,7 +18,7 @@
     </div>
   </div>
 </div>
-
+ 
 <?php if ($post->comment_content):?>
   <div class="row">
     <div class="col s12 m6">
@@ -34,7 +35,13 @@
     </div>
   </div>
 <?php else: ?>
-  <div>
-    <p>pas de commentaire</p>
+  <div class="row">
+    <div class="col s12 m6">
+      <div class="card blue-grey darken-1">
+        <div class="card-content white-text">
+          <p> il n'y a pas encore de commentaire </p>
+        </div>
+      </div>
+    </div>
   </div>
 <?php endif; ?>

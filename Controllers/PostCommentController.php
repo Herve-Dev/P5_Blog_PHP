@@ -36,7 +36,7 @@ class PostCommentController extends Controller
 
                 // On hydrate
                 $postCommentModel->setComment_Content($comment)
-                    ->setPost_id($idPost)
+                    ->setId_post($idPost)
                     ->setUser_id($_SESSION['user']['id'])
                     ->setComment_CreatedAt(date_create('now', timezone_open('Europe/Paris'))->format('Y-m-d H:i:s'));
 

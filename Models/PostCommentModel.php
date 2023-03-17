@@ -8,7 +8,7 @@ class PostCommentModel extends Model
     protected $comment_active;
     protected $comment_createdAt;
     protected $comment_updatedAt;
-    protected $post_id;
+    protected $id_post;
     protected $user_id;
 
     public function __construct()
@@ -118,26 +118,6 @@ class PostCommentModel extends Model
     }
 
     /**
-     * Get the value of post_id
-     */ 
-    public function getPost_id()
-    {
-        return $this->post_id;
-    }
-
-    /**
-     * Set the value of post_id
-     *
-     * @return  self
-     */ 
-    public function setPost_id($post_id)
-    {
-        $this->post_id = $post_id;
-
-        return $this;
-    }
-
-    /**
      * Get the value of user_id
      */ 
     public function getUser_id()
@@ -153,6 +133,26 @@ class PostCommentModel extends Model
     public function setUser_id($user_id)
     {
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id_post
+     */ 
+    public function getId_post()
+    {
+        return $this->id_post;
+    }
+
+    /**
+     * Set the value of id_post
+     *
+     * @return  self
+     */ 
+    public function setId_post($id_post)
+    {
+        $this->id_post = $id_post;
 
         return $this;
     }
