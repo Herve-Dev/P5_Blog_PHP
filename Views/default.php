@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="style.css">
     <title>Titre</title>
 </head>
 
@@ -19,11 +20,16 @@
 
                 <?php if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) : ?>
                     <li><a href="/">Acceuil</a></li>
-                    <li><a href="/post">Mes Publications</a></li>
-                    <div class="chip">
-                        <img src="#" alt="Contact Person">
-                        Jane Doe
-                    </div>
+
+                        <?php if ($_SESSION['user']['role'] === 'ADMIN'): ?>
+                            <li><a href="/post">Mes Publications</a></li>
+                            <li><a href="/post/addPost">Ajouter un post</a></li>
+                        <?php endif; ?> 
+
+                        <div class="chip">
+                            <img src="/image/avatar_image/<?php echo $_SESSION['user']['avatar'] ?>" alt="Contact Person">
+                            <?php echo $_SESSION['user']['username']; ?>
+                        </div>
                     <li><a href="user/logout">Se déconnecter </a></li>
                 <?php else : ?>
 

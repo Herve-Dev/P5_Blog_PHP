@@ -4,7 +4,7 @@
         <div class="col s12 m7">
             <div class="card">
                 <div class="card-image">
-                    <img src="/includes/<?= $post->post_image?>">
+                    <img src="/image/post_image/<?= $post->post_image ?>">
                     <span class="card-title"><?= $post->post_title?></span>
                 </div>
                 <div class="card-content">
@@ -20,3 +20,4 @@
         </div>  
     </div>
 <?php endforeach; ?>
+

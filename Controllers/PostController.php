@@ -19,7 +19,6 @@ class PostController extends Controller
         //On va chercher touts les posts
         $post = $postModel->findAll();
 
-
         //On génère la vue
         $this->render('post/index', ['posts' => $post ]);
     }
@@ -47,8 +46,8 @@ class PostController extends Controller
 
     public function addPost()
     {
-        //On vérifie si lutilisateur est connecté
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
+        //On vérifie si lutilisateur est connecté et qu'il a un role admin
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
             //l'utilisateur est connecté
 
             if (Form::validate($_POST,['post_title', 'post_chapo', 'post_content'])) {
@@ -62,12 +61,19 @@ class PostController extends Controller
                 // On instancie notre modèle
                 $postModel = new PostModel;
 
-                if ($_FILES['image']) {
-                    $name = $_FILES["image"]['name'];
-                    $folder = "../includes/$name";
-                    $tempname = $_FILES["image"]["tmp_name"];
-                    move_uploaded_file($tempname,$folder);
-                    $postModel->setPost_image($name);
+                //A REFACTORISER
+                if ($_FILES['post_image']) {
+                    $name = $_FILES["post_image"]['name'];
+                    $folder = "image/post_image/$name";
+
+                    if (file_exists($folder)) {
+                        $postModel->setPost_image($name);
+
+                    }else{
+                        $tempname = $_FILES["post_image"]["tmp_name"];
+                        move_uploaded_file($tempname,$folder);
+                        $postModel->setPost_image($name);
+                    }
                 }
 
                 // On hydrate 
@@ -104,6 +110,9 @@ class PostController extends Controller
                 ->endForm();
 
             $this->render('post/addPost', ['form' => $form->create()]);
+        } else {
+            $_SESSION['error'] = "Acces non autorisé";
+            header('Location: /');
         }
     }
 
@@ -116,7 +125,7 @@ class PostController extends Controller
     public function updatePost(int $id)
     {
         //On verifie si l'utilisateur est connecté
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
             
             //On va vérifier si le post existe dans la base
             // On instancie notre modèle
@@ -135,7 +144,7 @@ class PostController extends Controller
 
             // On vérifie si l'utilisateur est propriétaire du post
             if ($post->user_id !== $_SESSION['user']['id']) {
-                $_SESSION['error'] = "Vous n'avez pas accès à cette page";
+                $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
                 header('Location: /post');
                 exit;
             }
@@ -193,7 +202,7 @@ class PostController extends Controller
             $this->render('post/updatePost', ['form' => $form->create()]);
 
         } else {
-            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page";
+            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
             header('Location /users/login');
             exit;
         }
@@ -207,12 +216,19 @@ class PostController extends Controller
      */
     public function deletePost(int $id)
     {
-        $postDelete = new PostModel;
+        //On verifie si l'utilisateur est connecté
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
+            $postDelete = new PostModel;
 
-        //Je choisis la colonne concernée      
-        $columnTarget = "id_post";
+            //Je choisis la colonne concernée      
+            $columnTarget = "id_post";
 
-        $postDelete->delete($id, $columnTarget);
-        header('Location: /post');
+            $postDelete->delete($id, $columnTarget);
+            header('Location: /post');
+        } else {
+            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
+            header('Location /users/login');
+            exit;
+        }
     }
 }
