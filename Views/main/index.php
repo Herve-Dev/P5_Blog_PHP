@@ -1,1 +1,3 @@
-<p>Page d'acceuil du blog</p>
+<div>
+    <h2>FullMetalDev</h2>
+</div>
