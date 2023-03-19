@@ -21,18 +21,32 @@
                 <?php if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) : ?>
                     <li><a href="/">Acceuil</a></li>
 
-                        <?php if ($_SESSION['user']['role'] === 'ADMIN'): ?>
-                            <li><a href="/post">Mes Publications</a></li>
-                            <li><a href="/post/addPost">Ajouter un post</a></li>
-                        <?php endif; ?> 
+                    <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
+                        <li><a href="/post/addPost">Ajouter un post</a></li>
+                    <?php endif; ?>
 
-                        <div class="chip">
-                            <img src="/image/avatar_image/<?php echo $_SESSION['user']['avatar'] ?>" alt="Contact Person">
-                            <?php echo $_SESSION['user']['username']; ?>
-                        </div>
                     <li><a href="/post">Les Publications</a></li>
                     <li><a href="/image/Cv/Intégrateur_Developpeur_Web.pdf" download>curriculum vitae</a></li>
                     <li><a href="/user/logout">Se déconnecter </a></li>
+                    <li>
+                        <a class="dropdown-trigger" href="#!" data-target="dropdown1">
+                            <div class="chip">
+                                <img src="/image/avatar_image/<?php echo $_SESSION['user']['avatar'] ?>" alt="Contact Person">
+                                <?php echo $_SESSION['user']['username']; ?>
+                            </div>
+                            <i class="material-icons right">
+                                arrow_drop_down
+                            </i>
+                        </a>
+                        <ul id="dropdown1" class="dropdown-content">
+                            <li><a href="#!">one</a></li>
+                            <li><a href="#!">two</a></li>
+                            <li class="divider"></li>
+                        <li><a href="#!">three</a></li>
+                    </ul>
+                    </li>
+                    
+
                 <?php else : ?>
 
                     <li><a href="/user/register">S'inscrire</a></li>
@@ -42,7 +56,19 @@
             </ul>
         </div>
     </nav>
+   
+    <!-- Dropdown Trigger -->
+  <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
 
+<!-- Dropdown Structure -->
+<ul id='dropdown1' class='dropdown-content'>
+  <li><a href="#!">one</a></li>
+  <li><a href="#!">two</a></li>
+  <li class="divider" tabindex="-1"></li>
+  <li><a href="#!">three</a></li>
+  <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+  <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+</ul>
     <main class="container"> <?= $content ?></main>
 
     <footer class="page-footer blue darken-3">
@@ -68,6 +94,7 @@
             </div>
         </div>
     </footer>
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="/js/index.js"></script>

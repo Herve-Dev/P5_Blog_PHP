@@ -141,4 +141,24 @@ class UserController extends Controller
         header('Location: /');
         exit;
     }
+
+    public function updatePassword(string $email)
+    {
+        $userModel = new UserModel;
+        $findUser = $userModel->findOneByEmail($email);
+
+        if ($findUser) {
+            $form = new Form;
+            $form->startForm()
+                ->addLabelForm('password', 'Mot de passe :')
+                ->addInput('password', 'password', ['id' => 'password', 'class' => 'validate'])
+
+                ->addLabelForm('confirmPassword', ' Confirmer votre Mot de passe :')
+                ->addInput('password', 'confirmPassword', ['id' => 'confirmPassword', 'class' => 'validate'])
+
+                ->addButton("m'inscrire", ['class' => 'btn waves-effect waves-light'])
+                ->endForm();
+            $this->render('/user/updatePassword', ['formUpdatePass' => $form->create()]);    
+        }
+    }
 }
