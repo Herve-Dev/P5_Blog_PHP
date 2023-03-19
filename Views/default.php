@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
-    <title>HERVE BLOGg</title>
+    <title>HERVE BLOG</title>
 </head>
 
 <body>
@@ -55,7 +55,7 @@
                     <ul>
                         <li><a class="grey-text text-lighten-3" href="#!">Linkedin</a></li>
                         <li><a class="grey-text text-lighten-3" href="#!">Github</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!">Me contacter</a></li>
+                        <li><a class="grey-text text-lighten-3" href="contact/sendMailContact">Me contacter</a></li>
                     </ul>
                 </div>
             </div>

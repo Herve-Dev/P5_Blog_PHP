@@ -8,7 +8,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class SendMail
 {
-    public static function sendmailAuth(string $newUserMail, string $token) {
+    public static function sendmail(string $newUserMail, string $message, string $subject) {
 
         $mail = new PHPMailer(true);
 
@@ -36,8 +36,8 @@ class SendMail
 
             //Contenu
             $mail->isHTML(true);
-            $mail->Subject = "Authentification de votre profil";
-            $mail->Body = 'Cliquez sur le lien pour vous authentifier <a href="http://p5blogphp/email/index/'.$token.'"> Valider mon inscription</a>';
+            $mail->Subject = $subject; /*"Authentification de votre profil";*/
+            $mail->Body = $message ; /*'Cliquez sur le lien pour vous authentifier <a href="http://p5blogphp/email/index/'.$token.'"> Valider mon inscription</a>';*/
 
             // On envoie
             $mail->send();

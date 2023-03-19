@@ -121,8 +121,12 @@ class UserController extends Controller
                 $newUser->create();
 
                 $cryptParamURL = Utils::encodeMailURL($email);
+                $subject = "Authentification de votre profil";
+                $message = 'Cliquez sur le lien pour vous authentifier <a href="http://p5blogphp/email/index/'.$cryptParamURL.'"> Valider mon inscription</a>';
+                
+
                 $sendMail = new SendMail;
-                $sendMail->sendmailAuth($email, $cryptParamURL);
+                $sendMail->sendmail($email, $subject, $message);
             }
         }
     }
