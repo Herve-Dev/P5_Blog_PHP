@@ -30,6 +30,8 @@
                             <img src="/image/avatar_image/<?php echo $_SESSION['user']['avatar'] ?>" alt="Contact Person">
                             <?php echo $_SESSION['user']['username']; ?>
                         </div>
+                    <li><a href="/post">Les Publications</a></li>
+                    <li><a href="/image/Cv/Intégrateur_Developpeur_Web.pdf" download>curriculum vitae</a></li>
                     <li><a href="/user/logout">Se déconnecter </a></li>
                 <?php else : ?>
 
