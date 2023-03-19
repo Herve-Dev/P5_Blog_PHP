@@ -1,3 +1,3 @@
-<h1>Connexion</h1>
-<?= $loginForm ?>
-<a href="/user/register"> Pas encore inscrit ?</a>
+<h1 class="center-align">Connexion</h1>
+<?= $loginForm ?><br>
+<a class="user-form" href="/user/register"> Pas encore inscrit ?</a>

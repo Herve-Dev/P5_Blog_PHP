@@ -1,4 +1,3 @@
-<h1>Page des posts</h1>
 <?php foreach ($posts as $post) : ?>
     <div class="row">
         <div class="col s12 m7">

@@ -8,14 +8,14 @@
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="style.css">
-    <title>Mon Blog</title>
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <title>HERVE BLOGg</title>
 </head>
 
 <body>
     <nav>
         <div class="nav-wrapper blue darken-3">
-            <a href="/" class="brand-logo ">MON BLOG</a>
+            <a href="/" class="brand-logo"> HERVE BLOG</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
 
                 <?php if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) : ?>
@@ -30,24 +30,24 @@
                             <img src="/image/avatar_image/<?php echo $_SESSION['user']['avatar'] ?>" alt="Contact Person">
                             <?php echo $_SESSION['user']['username']; ?>
                         </div>
-                    <li><a href="user/logout">Se déconnecter </a></li>
+                    <li><a href="/user/logout">Se déconnecter </a></li>
                 <?php else : ?>
 
-                    <li><a href="user/register">S'inscrire</a></li>
-                    <li><a href="user/login">Se connecter</a></li>
+                    <li><a href="/user/register">S'inscrire</a></li>
+                    <li><a href="/user/login">Se connecter</a></li>
 
                 <?php endif; ?>
             </ul>
         </div>
     </nav>
 
-    <div class="container"> <?= $content ?></div>
+    <main class="container"> <?= $content ?></main>
 
     <footer class="page-footer blue darken-3">
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
-                    <h5 class="white-text">Mon Blog</h5>
+                    <h5 class="white-text">HERVE BLOG</h5>
                     <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
                 </div>
                 <div class="col l4 offset-l2 s12">
@@ -68,6 +68,7 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="/js/index.js"></script>
 </body>
 
 </html>
