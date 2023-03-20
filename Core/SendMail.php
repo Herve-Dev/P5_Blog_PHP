@@ -22,8 +22,8 @@ class SendMail
             $mail->SMTPAuth = true;
             $mail->Username = getenv('EMAIL_SMTP');
             $mail->Password = getenv('PASS_SMTP');
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-            $mail->Port = 465;
+            //$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port = 1025;
 
             // Charset
             $mail->CharSet = "utf-8";

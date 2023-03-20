@@ -118,15 +118,15 @@ class UserController extends Controller
                     ->setPassword($passHash);
                 
                 //On stock l'utilisateur
-                $newUser->create();
-
+                //$newUser->create();
+                
                 $cryptParamURL = Utils::encodeMailURL($email);
                 $subject = "Authentification de votre profil";
                 $message = 'Cliquez sur le lien pour vous authentifier <a href="http://p5blogphp/email/index/'.$cryptParamURL.'"> Valider mon inscription</a>';
                 
 
                 $sendMail = new SendMail;
-                $sendMail->sendmail($email, $subject, $message);
+                $sendMail->sendmail($email, $message, $subject);
             }
         }
     }
@@ -182,7 +182,6 @@ class UserController extends Controller
                                 $_SESSION['message'] = 'Votre mot de passe a été modifier avec succes';
                             }
                     }
-                
             }
         } else {
             $_SESSION['error'] = "Une erreur est survenue";

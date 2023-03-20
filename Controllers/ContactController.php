@@ -26,7 +26,7 @@ class ContactController extends Controller
 
             $subject = "Message de : $emailUser";
             $sendMail = new SendMail;
-            $sendMail->sendmail($email, $subject, $message);
+            $sendMail->sendmail($email, $message, $subject);
 
             $_SESSION['message'] = "Votre message a été envoyer avec succès";
         } else {
