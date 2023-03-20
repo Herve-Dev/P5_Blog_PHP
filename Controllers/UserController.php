@@ -208,7 +208,7 @@ class UserController extends Controller
                 if ($foundUser) {
                     $cryptParamURL = Utils::encodeMailURL($email);
                     $subject = "Authentification de votre profil";
-                    $message = 'Cliquez sur le lien pour modifier votre mot de passe <a href="http://p5blogphp/email/index/'.$cryptParamURL.'"> Valider mon inscription</a>';
+                    $message = 'Cliquez sur le lien pour modifier votre mot de passe <a href="http://p5blogphp/user/updatePassForget/'.$cryptParamURL.'">Lien</a>';
                 
 
                     $sendMail = new SendMail;
@@ -232,9 +232,9 @@ class UserController extends Controller
 
         //On verfie ci l'email correspond a l'email dans la base de donnée
         $userModel = new UserModel;
-        $userEmail = $userModel->findOneByEmail($decryptParamUrl);
+        $findUser = $userModel->findOneByEmail($decryptParamUrl);
 
-            if ($userEmail) {
+            if ($findUser) {
                 
                 $form = new Form;
                 $form->startForm()
@@ -246,6 +246,27 @@ class UserController extends Controller
 
                     ->addButton("modifier mon mot de passe", ['class' => 'btn waves-effect waves-light'])
                     ->endForm();
+                $this->render('/user/updatePassForget',['formForgetPassword' => $form->create()]); 
+                
+                if (Form::validate($_POST, ['new-password', 'confirm-password'])) {
+                    $newPass = strip_tags($_POST['new-password']);
+                    $confirmPass = strip_tags($_POST['confirm-password']);
+    
+                    $user = $userModel->hydrate($findUser);
+
+                    $comparePass = new Utils;
+                    $passHash = $comparePass->comparePass($newPass,$confirmPass);
+
+                        if ($passHash === false) {
+                            return $passHash;
+                        } else {
+                            $user->setPassword($passHash);
+                            $user->update($findUser->id);
+                            $_SESSION['message'] = 'Votre mot de passe a été modifier avec succes';
+                            header('Location : /user/login');
+                        }
+                
+                }
             }
 
         
