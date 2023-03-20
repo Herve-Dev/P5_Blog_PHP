@@ -39,7 +39,14 @@ h1 {
 h3, h5, h1, h2 {
     font-family: 'Heaters', sans-serif;
 }
-  
-.test {
-    position: absolute;
+
+.container-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    width: 100%;
+}
+
+.container-form > form {
+    width: 50%;
 }

@@ -142,23 +142,52 @@ class UserController extends Controller
         exit;
     }
 
-    public function updatePassword(string $email)
+    public function updatePassword(int $id_user)
     {
         $userModel = new UserModel;
-        $findUser = $userModel->findOneByEmail($email);
+        $findUser = $userModel->find($id_user);
 
         if ($findUser) {
             $form = new Form;
             $form->startForm()
-                ->addLabelForm('password', 'Mot de passe :')
-                ->addInput('password', 'password', ['id' => 'password', 'class' => 'validate'])
+                ->addLabelForm('password', 'Votre ancien mot de passe :')
+                ->addInput('password', 'old-password', ['id' => 'password', 'class' => 'validate'])
+
+                ->addLabelForm('password', 'Votre nouveau mot de passe :')
+                ->addInput('password', 'new-password', ['id' => 'password', 'class' => 'validate'])
 
                 ->addLabelForm('confirmPassword', ' Confirmer votre Mot de passe :')
-                ->addInput('password', 'confirmPassword', ['id' => 'confirmPassword', 'class' => 'validate'])
+                ->addInput('password', 'confirm-password', ['id' => 'confirmPassword', 'class' => 'validate'])
 
-                ->addButton("m'inscrire", ['class' => 'btn waves-effect waves-light'])
+                ->addButton("modifier mon mot de passe", ['class' => 'btn waves-effect waves-light'])
                 ->endForm();
-            $this->render('/user/updatePassword', ['formUpdatePass' => $form->create()]);    
+            $this->render('/user/updatePassword', ['formUpdatePass' => $form->create()]);  
+            
+            if (Form::validate($_POST, ['old-password','new-password', 'confirm-password'])) {
+                $oldPass = strip_tags($_POST['old-password']);
+                $newPass = strip_tags($_POST['new-password']);
+                $confirmPass = strip_tags($_POST['confirm-password']);
+
+                $user = $userModel->hydrate($findUser);
+
+                    if (password_verify($oldPass, $user->getPassword())) { 
+                        $comparePass = new Utils;
+                        $passHash = $comparePass->comparePass($newPass,$confirmPass);
+
+                            if ($passHash === false) {
+                                return $passHash;
+                            } else {
+                                $user->setPassword($passHash);
+                                $user->update($findUser->id);
+                                $_SESSION['message'] = 'Votre mot de passe a été modifier avec succes';
+                            }
+                    }
+                
+            }
+        } else {
+            $_SESSION['error'] = "Une erreur est survenue";
+            header('Location: /');
+            exit;
         }
     }
 }
