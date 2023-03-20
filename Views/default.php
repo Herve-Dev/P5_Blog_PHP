@@ -27,7 +27,6 @@
 
                     <li><a href="/post">Les Publications</a></li>
                     <li><a href="/image/Cv/Intégrateur_Developpeur_Web.pdf" download>curriculum vitae</a></li>
-                    <li><a href="/user/logout">Se déconnecter </a></li>
                     <li>
                         <a class="dropdown-trigger" href="#!" data-target="dropdown1">
                             <div class="chip">
@@ -40,9 +39,11 @@
                         </a>
                         <ul id="dropdown1" class="dropdown-content">
                             <li><a href="/user/updatePassword/<?php echo $_SESSION['user']['id']?>">Modifier mon mot de passe</a></li>
-                            <li><a href="#!">two</a></li>
+                            <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
+                                <li><a href="/admin/index">Espace administration</a></li>
+                            <?php endif; ?>    
                             <li class="divider"></li>
-                        <li><a href="#!">three</a></li>
+                        <li><a href="/user/logout">Se déconnecter</a></li>
                     </ul>
                     </li>
                     
