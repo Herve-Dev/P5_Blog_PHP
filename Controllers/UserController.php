@@ -189,4 +189,65 @@ class UserController extends Controller
             exit;
         }
     }
+
+    public function forgetPassword()
+    {
+        $form = new Form;
+        $form->startForm()
+            ->addLabelForm('email', 'E-mail :')
+            ->addInput('email', 'email', ['class' => 'validate' , 'id' => 'email'])
+            ->addButton("Envoyer", ['class' => 'btn waves-effect waves-light'])
+            ->endForm();
+        $this->render('/user/forgetPassword', ['formForgetPassword' => $form->create()]); 
+        
+        if (Form::validate($_POST, ['email'])) { 
+            $email = strip_tags($_POST['email']);
+            $userModel = new UserModel;
+            $foundUser = $userModel->findOneByEmail($email);
+
+                if ($foundUser) {
+                    $cryptParamURL = Utils::encodeMailURL($email);
+                    $subject = "Authentification de votre profil";
+                    $message = 'Cliquez sur le lien pour modifier votre mot de passe <a href="http://p5blogphp/email/index/'.$cryptParamURL.'"> Valider mon inscription</a>';
+                
+
+                    $sendMail = new SendMail;
+                    $sendMail->sendmail($email, $message, $subject);
+                }
+
+
+        }else{
+            $_SESSION['error'] = "Une erreur est survenue";
+            exit;
+        }
+    }
+
+    public function updatePassForget(string $cryptParamURL)
+    {
+        //On decode en base64
+        $base64Decode = base64_decode($cryptParamURL);
+
+        //On décrypte le paramètre envoyé dans l'url
+        $decryptParamUrl = openssl_decrypt($base64Decode, "AES-128-ECB", getenv('SECRET_KEY_OPENSSL'));
+
+        //On verfie ci l'email correspond a l'email dans la base de donnée
+        $userModel = new UserModel;
+        $userEmail = $userModel->findOneByEmail($decryptParamUrl);
+
+            if ($userEmail) {
+                
+                $form = new Form;
+                $form->startForm()
+                    ->addLabelForm('password', 'Votre nouveau mot de passe :')
+                    ->addInput('password', 'new-password', ['id' => 'password', 'class' => 'validate'])
+
+                    ->addLabelForm('confirmPassword', ' Confirmer votre Mot de passe :')
+                    ->addInput('password', 'confirm-password', ['id' => 'confirmPassword', 'class' => 'validate'])
+
+                    ->addButton("modifier mon mot de passe", ['class' => 'btn waves-effect waves-light'])
+                    ->endForm();
+            }
+
+        
+    }
 }
