@@ -35,13 +35,21 @@ class PostController extends Controller
         $postModel = new PostModel;
 
         //On va chercher 1 post
-        //$post = $postModel->find($id);
+        /*$columnTarget = "id_post";
+        $post = $postModel->find($id, $columnTarget);*/
 
-        //On cherche les commentaires lier au post
-        $post = $postModel->findPostWithcomment($id);
+        //On cherche l'autheur lié au post
+        $post = $postModel->findPostWithAuthor($id);
+
+        //On cherche les commentaire lié au post
+        $comments = $postModel->findPostWithComment($id);
+
+
+        // Erreur que je ne comprend pas mais règle mon problème
+        //$post->id_post = $id;
 
         //On envoie à la vue
-        $this->render('post/read', compact('post'));
+        $this->render('post/read', compact('post','comments'));
     }
 
     public function addPost()

@@ -13,37 +13,31 @@
       </div>
       <div class="card-action">
         <a href="/PostComment/addComment/<?= $post->id_post ?>">Ajouter un commentaire</a>
-        <?php if ($_SESSION['user']['role'] === 'ADMIN'): ?>
+        <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
           <a href="post/deletePost/<?= $post->id_post ?>">Supprimez le post</a>
-        <?php endif; ?>  
+        <?php endif; ?>
       </div>
     </div>
   </div>
 </div>
- 
-<?php if ($post->comment_content):?>
-  <div class="row">
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
-          <p> <?= $post->comment_content ?></p>
-          <p>Auteur du commentaire : <?= $post->username ?> </p>
-        </div>
-        <div class="card-action">
-          <a href="#">Supprimez mon commentaire</a>
-          <a href="#">Mettre à jour mon commentaire</a>
-        </div>
-      </div>
-    </div>
-  </div>
-<?php else: ?>
-  <div class="row">
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
-          <p> il n'y a pas encore de commentaire </p>
+
+<?php if ($comments !== null) : ?>
+  <?php foreach ($comments as $comment) : ?>
+    <div class="row">
+      <div class="col s12 m6">
+        <div class="card blue-grey darken-1">
+          <div class="card-content white-text">
+            <p> <?= $comment->comment_content ?></p>
+            <p>Auteur du commentaire : <?= $comment->username ?> </p>
+          </div>
+          <div class="card-action">
+            <?php if($comment->user_id === $_SESSION['user']['id']):?>
+              <a href="#">Supprimez mon commentaire</a>
+              <a href="/PostComment/updateComment/<?= $comment->id_comment ?>">Mettre à jour mon commentaire</a>
+            <?php endif; ?>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <?php endforeach; ?>
 <?php endif; ?>

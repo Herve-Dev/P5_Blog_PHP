@@ -16,7 +16,6 @@ class PostCommentModel extends Model
         $this->table = 'comment';
     }
 
-
     /**
      * Get the value of id_comment
      */ 
