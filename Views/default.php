@@ -25,7 +25,7 @@
                         <li><a href="/post/addPost">Ajouter un post</a></li>
                     <?php endif; ?>
 
-                    <li><a href="/post">Les Publications</a></li>
+                    <li><a href="/post">Publications</a></li>
                     <li><a href="/image/Cv/Intégrateur_Developpeur_Web.pdf" download>curriculum vitae</a></li>
                     <li>
                         <a class="dropdown-trigger" href="#!" data-target="dropdown1">
