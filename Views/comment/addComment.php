@@ -1,2 +1,4 @@
 <h1>Ajoutez votre commentaire</h1>
-<?= $formComment ?>
+<div class="container-form">
+    <?= $formComment ?>
+</div>    

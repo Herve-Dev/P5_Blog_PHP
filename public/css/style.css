@@ -21,6 +21,10 @@ h1 {
 
 .link-form {
     font-size: 18px;
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    margin-left: 25%;
 }
 
 .brand-logo{

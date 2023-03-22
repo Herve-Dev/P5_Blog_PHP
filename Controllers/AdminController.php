@@ -8,44 +8,32 @@ class AdminController extends Controller
 {
     public function index()
     {
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
+        if ($this->isAdmin()) {
             $this->render('/admin/index');
-        }else {
-            $_SESSION['error'] = "Vous n'avez l'autorisation";
-            header('Location : /post/index');
-            exit;
         }
     }
 
     public function managePost()
     {
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') { 
+        if ($this->isAdmin()) { 
             $postModel = new PostModel;
             $post = $postModel->findAll();
             $this->render('admin/managePost', ['posts' => $post]);
-        }else {
-            $_SESSION['error'] = "Vous n'avez l'autorisation";
-            header('Location : /post/index');
-            exit;
         }
     }
 
     public function manageComment()
     {
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') { 
+        if ($this->isAdmin()) { 
             $commentModel = new PostCommentModel;
             $comment = $commentModel->findAll();
             $this->render('admin/manageComment', ['comments' => $comment]);
-        } else {
-            $_SESSION['error'] = "Vous n'avez pas l'autorisation";
-            header('Location : /post/index');
-            exit;
         }
     }
 
     public function activeComment(int $idComment)
     {
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') { 
+        if ($this->isAdmin()) { 
             $commentModel = new PostCommentModel;
             $commentArray = $commentModel->findById($idComment);
 
@@ -57,9 +45,27 @@ class AdminController extends Controller
                     $columnTarget = 'id_comment';
                     $comment->update($idComment, $columnTarget);
                 }
+        }
+    }
+
+    public static function isAdmin()
+    {
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
+            return true;
         } else {
-            $_SESSION['error'] = "Vous n'avez pas l'autorisation";
-            header('Location : /post/index');
+            $_SESSION['erreur'] = "Vous n'avez pas accès à cette zone";
+            header('Location: /');
+            exit;
+        }
+    }
+
+    public static function isUser()
+    {
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
+            return true;
+        } else {
+            $_SESSION['erreur'] = "Vous n'avez pas accès à cette zone";
+            header('Location: /');
             exit;
         }
     }

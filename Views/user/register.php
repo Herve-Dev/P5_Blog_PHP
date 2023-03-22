@@ -1,4 +1,7 @@
 <h1>Inscription</h1>
-<?= $registerForm ?><br>
+<div class="container-form">
+    <?= $registerForm ?><br>
+</div>
 <a class="link-form" href="/user/login"> déjà inscrit</a>
+  
 

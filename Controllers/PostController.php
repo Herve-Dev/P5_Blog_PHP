@@ -41,12 +41,8 @@ class PostController extends Controller
         //On cherche l'autheur lié au post
         $post = $postModel->findPostWithAuthor($id);
 
-        //On cherche les commentaire lié au post
+        //On cherche les commentaires lié au post
         $comments = $postModel->findPostWithComment($id);
-
-
-        // Erreur que je ne comprend pas mais règle mon problème
-        //$post->id_post = $id;
 
         //On envoie à la vue
         $this->render('post/read', compact('post','comments'));
@@ -55,7 +51,7 @@ class PostController extends Controller
     public function addPost()
     {
         //On vérifie si lutilisateur est connecté et qu'il a un role admin
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
+        if (AdminController::isAdmin()) {
             //l'utilisateur est connecté
 
             if (Form::validate($_POST,['post_title', 'post_chapo', 'post_content'])) {
@@ -118,9 +114,6 @@ class PostController extends Controller
                 ->endForm();
 
             $this->render('post/addPost', ['form' => $form->create()]);
-        } else {
-            $_SESSION['error'] = "Acces non autorisé";
-            header('Location: /');
         }
     }
 
@@ -133,16 +126,16 @@ class PostController extends Controller
     public function updatePost(int $id)
     {
         //On verifie si l'utilisateur est connecté
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
+        if (AdminController::isAdmin()) {
             
             //On va vérifier si le post existe dans la base
             // On instancie notre modèle
             $postModel = new PostModel;
 
-            //On cherche l'annonce avec l'id
+            //On cherche le post avec l'id
             $post = $postModel->findById($id);
 
-            //Si l'annonce n'existe pas, on retourne à la liste des posts
+            //Si le post n'existe pas, on retourne à la liste des posts
             if (!$post) {
                 http_response_code(404);
                 $_SESSION['error'] = "Le post recherché n'existe pas";
@@ -151,7 +144,8 @@ class PostController extends Controller
             }
 
             // On vérifie si l'utilisateur est propriétaire du post
-            if ($post->user_id !== $_SESSION['user']['id']) {
+            $userSessionId = $_SESSION['user']['id'];
+            if ($post->user_id !== $userSessionId) {
                 $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
                 header('Location: /post');
                 exit;
@@ -208,11 +202,6 @@ class PostController extends Controller
 
             // On envoie à la vue 
             $this->render('post/updatePost', ['form' => $form->create()]);
-
-        } else {
-            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
-            header('Location /users/login');
-            exit;
         }
     }
 
@@ -224,8 +213,8 @@ class PostController extends Controller
      */
     public function deletePost(int $id)
     {
-        //On verifie si l'utilisateur est connecté
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
+        //On verifie si l'utilisateur est connecté et est admin
+        if (AdminController::isAdmin()) {
             $postDelete = new PostModel;
 
             //Je choisis la colonne concernée      
@@ -233,10 +222,6 @@ class PostController extends Controller
 
             $postDelete->delete($id, $columnTarget);
             header('Location: /post');
-        } else {
-            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
-            header('Location /users/login');
-            exit;
-        }
+        } 
     }
 }
