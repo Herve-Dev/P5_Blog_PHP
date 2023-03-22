@@ -32,7 +32,7 @@
           </div>
           <div class="card-action">
             <?php if($comment->user_id === $_SESSION['user']['id']):?>
-              <a href="#">Supprimez mon commentaire</a>
+              <a href="/PostComment/deleteComment/<?= $comment->id_comment ?>">Supprimez mon commentaire</a>
               <a href="/PostComment/updateComment/<?= $comment->id_comment ?>">Mettre à jour mon commentaire</a>
             <?php endif; ?>
           </div>

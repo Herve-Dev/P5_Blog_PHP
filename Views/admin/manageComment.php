@@ -16,7 +16,8 @@
                     <div class="switch">
                         <label>
                             Off
-                            <input type="checkbox">
+                            <input type="checkbox" class="switch" id="switch<?= $comment->id_comment?>" 
+                            <?= $comment->comment_active ? 'checked' : '' ?> data-id="<?= $comment->id_comment ?>">
                             <span class="lever"></span>
                             On
                         </label>

@@ -27,7 +27,7 @@ class PostModel extends Model
     public function findPostWithComment(int $id)
     {
         return $this->request("SELECT * FROM comment LEFT JOIN user
-            ON user.id = comment.user_id WHERE comment.id_post = ?", [$id])->fetchAll();
+            ON user.id = comment.user_id WHERE comment.id_post = ? AND comment.comment_active = 1", [$id])->fetchAll();
     }
 
     public function findById(int $id)

@@ -135,4 +135,20 @@ class PostCommentController extends Controller
             exit;
         }
     }
+
+    public function deleteComment(int $idComment)
+    {
+        //On verifie si l'utilisateur est connecté
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
+            $commentDelete = new PostCommentModel;
+
+            $commentDelete->deleteComment($idComment);
+
+            header('Location: /post');
+        } else {
+            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
+            header('Location /users/login');
+            exit;
+        }
+    }
 }

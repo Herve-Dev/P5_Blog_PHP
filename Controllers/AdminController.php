@@ -37,7 +37,28 @@ class AdminController extends Controller
             $comment = $commentModel->findAll();
             $this->render('admin/manageComment', ['comments' => $comment]);
         } else {
-            $_SESSION['error'] = "Vous n'avez l'autorisation";
+            $_SESSION['error'] = "Vous n'avez pas l'autorisation";
+            header('Location : /post/index');
+            exit;
+        }
+    }
+
+    public function activeComment(int $idComment)
+    {
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') { 
+            $commentModel = new PostCommentModel;
+            $commentArray = $commentModel->findById($idComment);
+
+                if ($commentArray) {
+                    $comment = $commentModel->hydrate($commentArray);
+
+                    $comment->setComment_active($comment->getComment_active() ? 0 : 1);
+
+                    $columnTarget = 'id_comment';
+                    $comment->update($idComment, $columnTarget);
+                }
+        } else {
+            $_SESSION['error'] = "Vous n'avez pas l'autorisation";
             header('Location : /post/index');
             exit;
         }

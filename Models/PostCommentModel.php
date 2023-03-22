@@ -26,6 +26,11 @@ class PostCommentModel extends Model
         return $this->request("UPDATE comment SET comment_content = '$values' WHERE id_comment = $idComment");
     }
 
+    public function deleteComment(int $idComment)
+    {
+        return $this->request("DELETE FROM comment WHERE id_comment = $idComment");
+    }
+
     /**
      * Get the value of id_comment
      */ 
