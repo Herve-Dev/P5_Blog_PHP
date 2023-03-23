@@ -20,3 +20,8 @@ function activeComment() {
   xmlhttp.open('GET', '/admin/activeComment/'+this.dataset.id)
   xmlhttp.send()
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('.sidenav');
+  var instances = M.Sidenav.init(elems);
+});

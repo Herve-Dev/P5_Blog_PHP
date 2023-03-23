@@ -38,17 +38,17 @@
                             </i>
                         </a>
                         <ul id="dropdown1" class="dropdown-content">
-                            <li><a href="/user/updatePassword/<?php echo $_SESSION['user']['id']?>">Modifier mon mot de passe</a></li>
+                            <li><a href="/user/updatePassword/<?php echo $_SESSION['user']['id'] ?>">Modifier mon mot de passe</a></li>
 
                             <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
                                 <li><a href="/admin/index">Espace administration</a></li>
-                            <?php endif; ?>    
-                            
+                            <?php endif; ?>
+
                             <li class="divider"></li>
-                        <li><a href="/user/logout">Se déconnecter</a></li>
-                    </ul>
+                            <li><a href="/user/logout">Se déconnecter</a></li>
+                        </ul>
                     </li>
-                    
+
 
                 <?php else : ?>
 
@@ -59,7 +59,9 @@
             </ul>
         </div>
     </nav>
-   
+    
+    <?php include('../Views/navResponsive.php') ?>
+
     <main class="container"> <?= $content ?></main>
 
     <footer class="page-footer blue darken-3">
@@ -85,7 +87,7 @@
             </div>
         </div>
     </footer>
-    
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="/js/index.js"></script>
