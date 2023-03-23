@@ -44,6 +44,11 @@ class UserModel extends Model
     {
         return $this->request("SELECT * FROM user WHERE email = ?", [$email])->fetch();
     }
+
+    public function findById(int $idUser)
+    {
+        return $this->request("SELECT * FROM user WHERE email = ?", [$idUser])->fetch();
+    }
     
     /**
      * Fonction mise à jour colonne authenticated

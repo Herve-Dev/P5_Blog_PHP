@@ -59,3 +59,16 @@ h3, h5, h1, h2 {
     border: solid 3px black;
     display: flex;
 }
+
+@media screen and (min-width: 993px){
+    .responsive-nav {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 993px){ 
+    .nav {
+        display: none;
+    }
+}
+

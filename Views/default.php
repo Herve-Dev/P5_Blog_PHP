@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <nav>
+    <nav class="nav">
         <div class="nav-wrapper blue darken-3">
             <a href="/" class="brand-logo"> HERVE BLOG</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -22,7 +22,7 @@
                     <li><a href="/">Acceuil</a></li>
 
                     <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
-                        <li><a href="/post/addPost">Ajouter un post</a></li>
+                        <li><a href="/post/addPost">Ajouter une publication</a></li>
                     <?php endif; ?>
 
                     <li><a href="/post">Publications</a></li>
