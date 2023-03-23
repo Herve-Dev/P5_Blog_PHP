@@ -54,3 +54,8 @@ h3, h5, h1, h2 {
 .container-form > form {
     width: 50%;
 }
+
+.content-post {
+    border: solid 3px black;
+    display: flex;
+}

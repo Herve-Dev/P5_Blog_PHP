@@ -39,9 +39,11 @@
                         </a>
                         <ul id="dropdown1" class="dropdown-content">
                             <li><a href="/user/updatePassword/<?php echo $_SESSION['user']['id']?>">Modifier mon mot de passe</a></li>
+
                             <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
                                 <li><a href="/admin/index">Espace administration</a></li>
                             <?php endif; ?>    
+                            
                             <li class="divider"></li>
                         <li><a href="/user/logout">Se déconnecter</a></li>
                     </ul>
