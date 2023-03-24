@@ -47,7 +47,7 @@ class UserModel extends Model
 
     public function findById(int $idUser)
     {
-        return $this->request("SELECT * FROM user WHERE email = ?", [$idUser])->fetch();
+        return $this->request("SELECT * FROM user WHERE id = ?", [$idUser])->fetch();
     }
     
     /**
