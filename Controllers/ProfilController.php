@@ -9,7 +9,6 @@ class ProfilController extends Controller
     {
         $userModel = new UserModel;
         $user = $userModel->findById($idUser);
-        var_dump($user);
 
         $this->render('user/profilUser',['user' => $user]);
     }

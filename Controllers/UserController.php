@@ -27,7 +27,7 @@ class UserController extends Controller
             if (!$userArray) {
                 // On envoie un message de session
                 $_SESSION['error'] = "l'adresse e-mail et/ou le mot de passe est incorrect";
-                header('Location: user/login');
+                header('Location: /user/login');
                 exit;
             }
 
