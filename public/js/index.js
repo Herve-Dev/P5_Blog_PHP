@@ -55,6 +55,8 @@ function FormUpdateComment() {
     method: 'GET',      
     headers: {}
   };
+
+  
   
   fetch('/post/findCom/'+this.dataset.comment, options)
   .then(response => response.json())
@@ -66,6 +68,8 @@ function FormUpdateComment() {
         formExist.remove()
       }
     
+    
+    const dataset = this.dataset.comment
 
     const resData = JSON.stringify(data).replace('"' ,'').replace('"', '')
     
@@ -81,30 +85,38 @@ function FormUpdateComment() {
       className: 'form-js'+this.dataset.comment
     })
 
-
     let label = document.createElement('label')
     label.setAttribute('for', 'comment_content')
     label.textContent = 'Votre commentaire :'
 
-    
     let input = document.createElement('input')
     Object.assign(input, {
       type: 'text',
       name: 'comment_content',
       className: 'validate',
-      id: 'update-input',
+      id: 'update-input'+this.dataset.comment,
     })
     input.setAttribute('value', resData)
 
     let btn = document.createElement('button')
     btn.setAttribute('class', `btn waves-effect waves-light btn-update${this.dataset.comment}`)
+    btn.setAttribute('type', 'button')
     btn.textContent = 'Mettre à jour mon commentaire'
+    
+    btn.addEventListener('click', function() {
+      let newData = document.getElementById('update-input'+dataset).value 
+      updateCom(dataset, newData )
+
+      console.log(encodeURI(newData));
+      
+    })
 
     form.append(label, input, btn)
     formUpdate.appendChild(form)
 
   })
 }
+
 
 
 function updateCom(id, data){
@@ -118,12 +130,14 @@ function updateCom(id, data){
     method: "POST",
     body: data
     })
-    .then((reponse) => {
-        // Gestion de la réponse
+    .then((response) => {
+        console.log(response);
     })
-    .catch((erreur) => {
-        // Gestion des erreurs
+    .catch((err) => {
+        console.log(err);
     });
+    
+    
 }
 
 
