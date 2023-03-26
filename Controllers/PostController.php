@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Core\Form;
+use App\Models\PostCommentModel;
 use App\Models\PostModel;
 
 class PostController extends Controller
@@ -29,23 +30,56 @@ class PostController extends Controller
      * @param integer $id
      * @return void
      */
-    public function read(int $id)
+    public function read(int $idPost, string $valueBind = '')
     {
         //On instancie le modèle
         $postModel = new PostModel;
 
-        //On va chercher 1 post
-        /*$columnTarget = "id_post";
-        $post = $postModel->find($id, $columnTarget);*/
-
         //On cherche l'autheur lié au post
-        $post = $postModel->findPostWithAuthor($id);
+        $post = $postModel->findPostWithAuthor($idPost);
 
         //On cherche les commentaires lié au post
-        $comments = $postModel->findPostWithComment($id);
+        $comments = $postModel->findPostWithComment($idPost);
+
+        $formComment = new Form;
+        $formComment->startForm()
+            ->addLabelForm('comment_content','Votre commentaire :')
+            ->addTextarea('comment_content', ['id' => 'comment', 'class' => 'validate'])
+
+            ->addButton('Ajouter un nouveau commentaire',['class' => 'btn waves-effect waves-light'])
+            ->endForm();
+        $formAddComment = $formComment->create();
+        
+        //J'apelle la fonction addComment pour le collapsible
+        PostCommentController::addComment($idPost); 
+        
+        $formUpdateComment = new Form;
+        $formUpdateComment->startForm()
+            ->addLabelForm('comment_content', 'Commentaire :')
+            ->addInput('text', 'comment_content', ['id' => 'update-input', 'class' => 'validate comment-input' , 'value' => $valueBind])
+
+            ->addButton('mettre à jour mon commentaire', ['class' => 'btn waves-effect waves-light'])
+            ->endForm();
+        $formUpdate = $formUpdateComment->create();  
 
         //On envoie à la vue
-        $this->render('post/read', compact('post','comments'));
+        $this->render('post/read', compact('post','comments', 'formAddComment'));
+        
+    }
+
+    public function findCom(int $idComment)
+    {
+        $commentModel = new PostCommentModel;
+        $comment = $commentModel->findById($idComment);
+        $result = $comment->comment_content;
+        echo json_encode($result);
+        die();
+    }
+
+
+    public function updateCom(int $idComment, string $data)
+    {
+        echo var_dump('ok');
     }
 
     public function addPost()

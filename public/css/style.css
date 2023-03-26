@@ -72,3 +72,12 @@ h3, h5, h1, h2 {
     }
 }
 
+.parallax-container {
+    width: 100%;
+}
+
+.container{
+    max-width: none;
+}
+    
+

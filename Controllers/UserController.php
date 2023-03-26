@@ -84,7 +84,7 @@ class UserController extends Controller
             ->addButton("m'inscrire", ['class' => 'btn waves-effect waves-light'])
             ->endForm();
 
-        $this->render('user/register', ['registerForm' => $form->create()]);
+        $this->render('/user/register', ['registerForm' => $form->create()]);
         
         // On vérifie si le formulaire est valide
         if (Form::validate($_POST, ['username','email', 'password', 'confirmPassword'])) {

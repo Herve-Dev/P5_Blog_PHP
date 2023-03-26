@@ -12,8 +12,19 @@
         <p> Auteur : <?= $post->username ?></p>
       </div>
       <div class="card-action">
-        <a href="/PostComment/addComment/<?= $post->id_post ?>">Ajouter un commentaire</a>
-        <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header"><i class="material-icons">add</i>Ajouter un commentaire</div>
+            <div class="collapsible-body">
+              <span>
+                <?= $formAddComment ?>
+              </span>
+            </div>
+          </li>
+        </ul>
+        <?php
+
+        if ($_SESSION['user']['role'] === 'ADMIN') : ?>
           <a href="post/deletePost/<?= $post->id_post ?>">Supprimez le post</a>
         <?php endif; ?>
       </div>
@@ -31,9 +42,19 @@
             <p>Auteur du commentaire : <?= $comment->username ?> </p>
           </div>
           <div class="card-action">
-            <?php if($comment->user_id === $_SESSION['user']['id']):?>
+            <?php if ($comment->user_id === $_SESSION['user']['id']) : ?>
               <a href="/PostComment/deleteComment/<?= $comment->id_comment ?>">Supprimez mon commentaire</a>
               <a href="/PostComment/updateComment/<?= $comment->id_comment ?>">Mettre à jour mon commentaire</a>
+              <ul class="collapsible collaps<?= $comment->id_comment ?>">
+                <li>
+                  <div class="update-com collapsible-header" data-comment="<?= $comment->id_comment ?>" data-post="<?= $comment->id_post ?>" ><i class="material-icons">update</i>Mettre à jour mon commentaire</div>
+                  <div class="collapsible-body" data-idcomment="<?= $comment->id_comment ?>">
+                    <span class="span-form<?= $comment->id_comment ?> span-collapsible">
+                      
+                    </span>
+                  </div>
+                </li>
+              </ul>
             <?php endif; ?>
           </div>
         </div>

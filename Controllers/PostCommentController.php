@@ -18,7 +18,7 @@ class PostCommentController extends Controller
         $this->render('comment/index', ['comments' => $comments ]);
     }
 
-    public function addComment(int $idPost)
+    public static function addComment(int $idPost)
     {
         //On vérifie si lutilisateur est connecté
         if (AdminController::isUser()) {
@@ -48,17 +48,6 @@ class PostCommentController extends Controller
                 header("Location: /post/read/$idPost");
                 exit;
             }
-
-            $form = new Form;
-
-            $form->startForm()
-                ->addLabelForm('comment_content','Votre commentaire :')
-                ->addInput('text', 'comment_content', ['id' => 'comment', 'class' => 'validate'])
-
-                ->addButton('Ajouter un nouveau commentaire',['class' => 'btn waves-effect waves-light'])
-                ->endForm();
-
-            $this->render('comment/addComment', ['formComment' => $form->create()]);
         }
     }
 
@@ -106,20 +95,19 @@ class PostCommentController extends Controller
                 $_SESSION['message'] = "Votre post a été modifié avec succès";
                 header('Location: /post');
                 exit;
-
             }
+            
+            $formUpdateComment = new Form;
 
-            $form = new Form;
-
-            $form->startForm()
+            $formUpdateComment->startForm()
                 ->addLabelForm('comment_content','Commentaire :')
                 ->addInput('text', 'comment_content', ['id' => 'title', 'class' => 'validate', 'value' => $comment->comment_content])
 
                 ->addButton('mettre à jour mon commentaire',['class' => 'btn waves-effect waves-light'])
-                ->endForm();
-
+                ->endForm();   
             // On envoie à la vue 
-            $this->render('comment/updateComment', ['form' => $form->create()]);
+            $this->render('comment/updateComment', ['form' => $formUpdateComment->create()]);
+
         } 
     }
 

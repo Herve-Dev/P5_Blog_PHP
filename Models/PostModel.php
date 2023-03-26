@@ -19,7 +19,6 @@ class PostModel extends Model
 
     public function findPostWithAuthor(int $id)
     {
-
         return $this->request("SELECT * FROM post LEFT JOIN user 
                             ON  user.id = post.user_id WHERE post.id_post = ?", [$id])->fetch();
     }
