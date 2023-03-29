@@ -79,7 +79,16 @@ class PostController extends Controller
 
     public function updateCom(int $idComment, string $data)
     {
-        echo var_dump('ok');
+        $newData = strip_tags(str_replace("_", " ", $data));
+        $commentModel = new PostCommentModel;
+        $update = $commentModel->updateComment($idComment, $newData);
+
+        $response = array(
+            'success' => 'commentaire mis à jour'
+        );
+        
+        echo json_encode($response) ;
+
     }
 
     public function addPost()

@@ -7,7 +7,7 @@
       </div>
       <div class="card-content">
         <p><?= $post->post_chapo ?></p><br>
-        <p><?= $post->post_content ?></p><br>
+        <p ><?= $post->post_content ?></p><br>
         <p> crée le : <?= $post->post_createdAt ?></p><br>
         <p> Auteur : <?= $post->username ?></p>
       </div>
@@ -38,7 +38,7 @@
       <div class="col s12 m6">
         <div class="card blue-grey darken-1">
           <div class="card-content white-text">
-            <p> <?= $comment->comment_content ?></p>
+            <p id="comment-<?= $comment->id_comment ?>"> <?= $comment->comment_content ?></p>
             <p>Auteur du commentaire : <?= $comment->username ?> </p>
           </div>
           <div class="card-action">
