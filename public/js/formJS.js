@@ -1,9 +1,14 @@
 export default class Form {
     constructor(dataset, dataForInput) {
 
-        let formUpdate = document.querySelector(
+        let parentForm = document.querySelector(
           `.span-form${dataset}`
         );
+
+        const formExist = document.getElementById(`form-js${dataset}`)
+        if (formExist) {
+          formExist.remove()
+        }
 
         let form = document.createElement("form");
         Object.assign(form, {
@@ -35,12 +40,12 @@ export default class Form {
         btn.textContent = "Mettre à jour mon commentaire";
 
         form.append(label, input, btn);
-        formUpdate.appendChild(form);
+        parentForm.appendChild(form);
 
         btn.addEventListener("click", function () {
           let newData = document.getElementById(`update-input${dataset}`).value;
           let comment = document.getElementById(`comment-${dataset}`);
-          comment.innerHTML = newData;
+          comment.textContent = newData;
 
            
           const formDelete = document.getElementById(`form-js${dataset}`).remove() 
@@ -54,17 +59,14 @@ export default class Form {
           
              fetch(`/post/updateCom/${dataset}/${newDataFetch}`, { method: "GET" })
               .then((response => response.json() ))
-              .then(response => M.toast({html: response.success}))
+              .then(response => M.toast({html: response.success, classes: "green"}))
               .catch((err) => {
                   console.log(err);
               });
 
           } else {
-            M.toast({html: "votre message n'a pas été mis à jour"})
-          }
-
-          
-
+            M.toast({html: "votre message n'a pas été mis à jour", classes: " orange accent-3"})
+          } 
         });
     }
 }

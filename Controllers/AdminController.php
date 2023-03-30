@@ -44,6 +44,13 @@ class AdminController extends Controller
 
                     $columnTarget = 'id_comment';
                     $comment->update($idComment, $columnTarget);
+
+                    $response = array(
+                        "activate" => "commentaire activé",
+                        "desactivate" => "commentaire désactivé"
+                    );
+
+                    echo json_encode($response);
                 }
         }
     }

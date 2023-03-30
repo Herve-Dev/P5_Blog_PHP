@@ -11,17 +11,28 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances = M.Dropdown.init(elems);
 });
 
-window.onload = () => {
-  let buttons = document.querySelectorAll(".switch")
+window.onload = async () => {
+  let buttons = document.querySelectorAll(".switch-button")
+  console.log(buttons);
   for (let button of buttons) {
     button.addEventListener("click", activeComment)
   }
 }
 
 function activeComment() {
-  let xmlhttp = new XMLHttpRequest;
+  /*let xmlhttp = new XMLHttpRequest;
   xmlhttp.open('GET', '/admin/activeComment/'+this.dataset.id)
-  xmlhttp.send()
+  xmlhttp.send()*/
+
+  console.log('ok');
+
+  /*const urlFetch = '/admin/activeComment/'+this.dataset.id
+  fetch(urlFetch, {method: 'GET'})
+  .then((response => response.json() ))
+    .then(response => M.toast({html: response.success, classes: "green"}))
+    .catch((err) => {
+        console.log(err);
+    });*/
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -49,7 +60,6 @@ window.onload = async () => {
   let collapsComments = document.querySelectorAll(".update-com")
   for (let collapsComment of collapsComments) {
     collapsComment.addEventListener("click", FormUpdateComment)
-    
   }
 }
 

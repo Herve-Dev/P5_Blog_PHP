@@ -84,10 +84,10 @@ class PostController extends Controller
         $update = $commentModel->updateComment($idComment, $newData);
 
         $response = array(
-            'success' => 'commentaire mis à jour'
+            'success' => 'Votre commentaire a été mis à jour'
         );
-        
-        echo json_encode($response) ;
+
+        echo json_encode($response);
 
     }
 
