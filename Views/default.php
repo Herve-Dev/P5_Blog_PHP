@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
-    <title>HERVE BLOGg</title>
+    <title>HERVE BLOG</title>
 </head>
 
 <body>
@@ -21,16 +21,32 @@
                 <?php if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) : ?>
                     <li><a href="/">Acceuil</a></li>
 
-                        <?php if ($_SESSION['user']['role'] === 'ADMIN'): ?>
-                            <li><a href="/post">Mes Publications</a></li>
-                            <li><a href="/post/addPost">Ajouter un post</a></li>
-                        <?php endif; ?> 
+                    <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
+                        <li><a href="/post/addPost">Ajouter un post</a></li>
+                    <?php endif; ?>
 
-                        <div class="chip">
-                            <img src="/image/avatar_image/<?php echo $_SESSION['user']['avatar'] ?>" alt="Contact Person">
-                            <?php echo $_SESSION['user']['username']; ?>
-                        </div>
+                    <li><a href="/post">Les Publications</a></li>
+                    <li><a href="/image/Cv/Intégrateur_Developpeur_Web.pdf" download>curriculum vitae</a></li>
                     <li><a href="/user/logout">Se déconnecter </a></li>
+                    <li>
+                        <a class="dropdown-trigger" href="#!" data-target="dropdown1">
+                            <div class="chip">
+                                <img src="/image/avatar_image/<?php echo $_SESSION['user']['avatar'] ?>" alt="Contact Person">
+                                <?php echo $_SESSION['user']['username']; ?>
+                            </div>
+                            <i class="material-icons right">
+                                arrow_drop_down
+                            </i>
+                        </a>
+                        <ul id="dropdown1" class="dropdown-content">
+                            <li><a href="/user/updatePassword/<?php echo $_SESSION['user']['id']?>">Modifier mon mot de passe</a></li>
+                            <li><a href="#!">two</a></li>
+                            <li class="divider"></li>
+                        <li><a href="#!">three</a></li>
+                    </ul>
+                    </li>
+                    
+
                 <?php else : ?>
 
                     <li><a href="/user/register">S'inscrire</a></li>
@@ -40,7 +56,7 @@
             </ul>
         </div>
     </nav>
-
+   
     <main class="container"> <?= $content ?></main>
 
     <footer class="page-footer blue darken-3">
@@ -55,7 +71,7 @@
                     <ul>
                         <li><a class="grey-text text-lighten-3" href="#!">Linkedin</a></li>
                         <li><a class="grey-text text-lighten-3" href="#!">Github</a></li>
-                        <li><a class="grey-text text-lighten-3" href="#!">Me contacter</a></li>
+                        <li><a class="grey-text text-lighten-3" href="/contact/sendMailContact">Me contacter</a></li>
                     </ul>
                 </div>
             </div>
@@ -66,6 +82,7 @@
             </div>
         </div>
     </footer>
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="/js/index.js"></script>

@@ -13,7 +13,9 @@
       </div>
       <div class="card-action">
         <a href="/PostComment/addComment/<?= $post->id_post ?>">Ajouter un commentaire</a>
-        <a href="post/deletePost/<?= $post->id_post ?>">Supprimez le post</a>
+        <?php if ($_SESSION['user']['role'] === 'ADMIN'): ?>
+          <a href="post/deletePost/<?= $post->id_post ?>">Supprimez le post</a>
+        <?php endif; ?>  
       </div>
     </div>
   </div>

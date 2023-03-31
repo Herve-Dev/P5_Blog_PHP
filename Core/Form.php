@@ -145,7 +145,7 @@ class Form
      * @param array $attributs
      * @return Form
      */
-    public function addTextarea(string $name, string $value = '', array $attributs = []): self
+    public function addTextarea(string $name, array $attributs = []): self
     {
         //On ouvre la balise
         $this->formCode .= "<textarea name='$name'";
@@ -154,7 +154,7 @@ class Form
         $this->formCode .= $attributs ? $this->addAttributs($attributs) : '';
 
         // On ajoute le texte
-        $this->formCode .= ">$value</label>";
+        $this->formCode .= "></textarea>";
 
         return $this;
     }

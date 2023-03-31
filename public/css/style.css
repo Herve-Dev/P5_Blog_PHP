@@ -19,8 +19,8 @@ h1 {
     justify-content: center;
 }
 
-.user-form {
-    font-size: 21px;
+.link-form {
+    font-size: 18px;
 }
 
 .brand-logo{
@@ -39,5 +39,14 @@ h1 {
 h3, h5, h1, h2 {
     font-family: 'Heaters', sans-serif;
 }
-  
-  
+
+.container-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    width: 100%;
+}
+
+.container-form > form {
+    width: 50%;
+}

@@ -118,11 +118,15 @@ class UserController extends Controller
                     ->setPassword($passHash);
                 
                 //On stock l'utilisateur
-                $newUser->create();
-
+                //$newUser->create();
+                
                 $cryptParamURL = Utils::encodeMailURL($email);
+                $subject = "Authentification de votre profil";
+                $message = 'Cliquez sur le lien pour vous authentifier <a href="http://p5blogphp/email/index/'.$cryptParamURL.'"> Valider mon inscription</a>';
+                
+
                 $sendMail = new SendMail;
-                $sendMail->sendmailAuth($email, $cryptParamURL);
+                $sendMail->sendmail($email, $message, $subject);
             }
         }
     }
@@ -136,5 +140,135 @@ class UserController extends Controller
         unset($_SESSION['user']);
         header('Location: /');
         exit;
+    }
+
+    public function updatePassword(int $id_user)
+    {
+        $userModel = new UserModel;
+        $findUser = $userModel->find($id_user);
+
+        if ($findUser) {
+            $form = new Form;
+            $form->startForm()
+                ->addLabelForm('password', 'Votre ancien mot de passe :')
+                ->addInput('password', 'old-password', ['id' => 'password', 'class' => 'validate'])
+
+                ->addLabelForm('password', 'Votre nouveau mot de passe :')
+                ->addInput('password', 'new-password', ['id' => 'password', 'class' => 'validate'])
+
+                ->addLabelForm('confirmPassword', ' Confirmer votre Mot de passe :')
+                ->addInput('password', 'confirm-password', ['id' => 'confirmPassword', 'class' => 'validate'])
+
+                ->addButton("modifier mon mot de passe", ['class' => 'btn waves-effect waves-light'])
+                ->endForm();
+            $this->render('/user/updatePassword', ['formUpdatePass' => $form->create()]);  
+            
+            if (Form::validate($_POST, ['old-password','new-password', 'confirm-password'])) {
+                $oldPass = strip_tags($_POST['old-password']);
+                $newPass = strip_tags($_POST['new-password']);
+                $confirmPass = strip_tags($_POST['confirm-password']);
+
+                $user = $userModel->hydrate($findUser);
+
+                    if (password_verify($oldPass, $user->getPassword())) { 
+                        $comparePass = new Utils;
+                        $passHash = $comparePass->comparePass($newPass,$confirmPass);
+
+                            if ($passHash === false) {
+                                return $passHash;
+                            } else {
+                                $user->setPassword($passHash);
+                                $user->update($findUser->id);
+                                $_SESSION['message'] = 'Votre mot de passe a été modifier avec succes';
+                            }
+                    }
+            }
+        } else {
+            $_SESSION['error'] = "Une erreur est survenue";
+            header('Location: /');
+            exit;
+        }
+    }
+
+    public function forgetPassword()
+    {
+        $form = new Form;
+        $form->startForm()
+            ->addLabelForm('email', 'E-mail :')
+            ->addInput('email', 'email', ['class' => 'validate' , 'id' => 'email'])
+            ->addButton("Envoyer", ['class' => 'btn waves-effect waves-light'])
+            ->endForm();
+        $this->render('/user/forgetPassword', ['formForgetPassword' => $form->create()]); 
+        
+        if (Form::validate($_POST, ['email'])) { 
+            $email = strip_tags($_POST['email']);
+            $userModel = new UserModel;
+            $foundUser = $userModel->findOneByEmail($email);
+
+                if ($foundUser) {
+                    $cryptParamURL = Utils::encodeMailURL($email);
+                    $subject = "Authentification de votre profil";
+                    $message = 'Cliquez sur le lien pour modifier votre mot de passe <a href="http://p5blogphp/user/updatePassForget/'.$cryptParamURL.'">Lien</a>';
+                
+
+                    $sendMail = new SendMail;
+                    $sendMail->sendmail($email, $message, $subject);
+                }
+
+
+        }else{
+            $_SESSION['error'] = "Une erreur est survenue";
+            exit;
+        }
+    }
+
+    public function updatePassForget(string $cryptParamURL)
+    {
+        //On decode en base64
+        $base64Decode = base64_decode($cryptParamURL);
+
+        //On décrypte le paramètre envoyé dans l'url
+        $decryptParamUrl = openssl_decrypt($base64Decode, "AES-128-ECB", getenv('SECRET_KEY_OPENSSL'));
+
+        //On verfie ci l'email correspond a l'email dans la base de donnée
+        $userModel = new UserModel;
+        $findUser = $userModel->findOneByEmail($decryptParamUrl);
+
+            if ($findUser) {
+                
+                $form = new Form;
+                $form->startForm()
+                    ->addLabelForm('password', 'Votre nouveau mot de passe :')
+                    ->addInput('password', 'new-password', ['id' => 'password', 'class' => 'validate'])
+
+                    ->addLabelForm('confirmPassword', ' Confirmer votre Mot de passe :')
+                    ->addInput('password', 'confirm-password', ['id' => 'confirmPassword', 'class' => 'validate'])
+
+                    ->addButton("modifier mon mot de passe", ['class' => 'btn waves-effect waves-light'])
+                    ->endForm();
+                $this->render('/user/updatePassForget',['formForgetPassword' => $form->create()]); 
+                
+                if (Form::validate($_POST, ['new-password', 'confirm-password'])) {
+                    $newPass = strip_tags($_POST['new-password']);
+                    $confirmPass = strip_tags($_POST['confirm-password']);
+    
+                    $user = $userModel->hydrate($findUser);
+
+                    $comparePass = new Utils;
+                    $passHash = $comparePass->comparePass($newPass,$confirmPass);
+
+                        if ($passHash === false) {
+                            return $passHash;
+                        } else {
+                            $user->setPassword($passHash);
+                            $user->update($findUser->id);
+                            $_SESSION['message'] = 'Votre mot de passe a été modifier avec succes';
+                            header('Location : /user/login');
+                        }
+                
+                }
+            }
+
+        
     }
 }
