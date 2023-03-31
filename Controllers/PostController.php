@@ -19,7 +19,6 @@ class PostController extends Controller
         //On va chercher touts les posts
         $post = $postModel->findAll();
 
-
         //On génère la vue
         $this->render('post/index', ['posts' => $post ]);
     }
@@ -36,7 +35,10 @@ class PostController extends Controller
         $postModel = new PostModel;
 
         //On va chercher 1 post
-        $post = $postModel->find($id);
+        //$post = $postModel->find($id);
+
+        //On cherche les commentaires lier au post
+        $post = $postModel->findPostWithcomment($id);
 
         //On envoie à la vue
         $this->render('post/read', compact('post'));
@@ -44,39 +46,42 @@ class PostController extends Controller
 
     public function addPost()
     {
-        //On vérifie si lutilisateur est connecté
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
+        //On vérifie si lutilisateur est connecté et qu'il a un role admin
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
             //l'utilisateur est connecté
 
-            if (Form::validate($_POST,['title', 'chapo', 'content'])) {
+            if (Form::validate($_POST,['post_title', 'post_chapo', 'post_content'])) {
                 // Le formulaire est complet
                 // On se protège contre les failles XSS
                 // strip_tags, htmlentities, htmlspecialchars
-                $title = strip_tags($_POST['title']);
-                $chapo = strip_tags($_POST['chapo']);
-                $content = strip_tags($_POST['content']);
+                $title = strip_tags($_POST['post_title']);
+                $chapo = strip_tags($_POST['post_chapo']);
+                $content = strip_tags($_POST['post_content']);
 
                 // On instancie notre modèle
                 $postModel = new PostModel;
 
-                if ($_FILES['image']) {
-                    $name = $_FILES["image"]['name'];
-                    $folder = "../includes/$name";
-                    $tempname = $_FILES["image"]["tmp_name"];
-                    move_uploaded_file($tempname,$folder);
+                //A REFACTORISER
+                if ($_FILES['post_image']) {
+                    $name = $_FILES["post_image"]['name'];
+                    $folder = "image/post_image/$name";
 
-                    $postModel->setImage($name);
+                    if (file_exists($folder)) {
+                        $postModel->setPost_image($name);
 
+                    }else{
+                        $tempname = $_FILES["post_image"]["tmp_name"];
+                        move_uploaded_file($tempname,$folder);
+                        $postModel->setPost_image($name);
+                    }
                 }
 
                 // On hydrate 
-                $postModel->setTitle($title)
-                    ->setChapo($chapo)
-                    ->setContent($content)
+                $postModel->setPost_title($title)
+                    ->setPost_chapo($chapo)
+                    ->setPost_content($content)
                     ->setUser_id($_SESSION['user']['id']);
-
-
-                var_dump($postModel);
+        
                 // On enregistre
                 $postModel->create();
 
@@ -89,22 +94,25 @@ class PostController extends Controller
             $form = new Form;
 
             $form->startForm()
-                ->addLabelForm('title','Titre :')
-                ->addInput('text', 'title', ['id' => 'title', 'class' => 'validate'])
+                ->addLabelForm('post_title','Titre :')
+                ->addInput('text', 'post_title', ['id' => 'title', 'class' => 'validate'])
 
-                ->addLabelForm('chapo', 'chapô :')
-                ->addInput('text', 'chapo', ['id'=> 'chapo', 'class' => 'validate'])
+                ->addLabelForm('post_chapo', 'chapô :')
+                ->addInput('text', 'post_chapo', ['id'=> 'chapo', 'class' => 'validate'])
 
-                ->addLabelForm('content', 'contenu :')
-                ->addInput('text', 'content', ['id' => 'content', 'class' => 'validate'])
+                ->addLabelForm('post_content', 'contenu :')
+                ->addInput('text', 'post_content', ['id' => 'content', 'class' => 'validate'])
 
-                ->addLabelForm('image', 'image :')
+                ->addLabelForm('post_image', 'image :')
                 ->addInputFiles()
 
                 ->addButton('Ajouter un nouveau post',['class' => 'btn waves-effect waves-light'])
                 ->endForm();
 
             $this->render('post/addPost', ['form' => $form->create()]);
+        } else {
+            $_SESSION['error'] = "Acces non autorisé";
+            header('Location: /');
         }
     }
 
@@ -117,14 +125,14 @@ class PostController extends Controller
     public function updatePost(int $id)
     {
         //On verifie si l'utilisateur est connecté
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
             
             //On va vérifier si le post existe dans la base
             // On instancie notre modèle
             $postModel = new PostModel;
 
             //On cherche l'annonce avec l'id
-            $post = $postModel->find($id);
+            $post = $postModel->findById($id);
 
             //Si l'annonce n'existe pas, on retourne à la liste des posts
             if (!$post) {
@@ -136,29 +144,32 @@ class PostController extends Controller
 
             // On vérifie si l'utilisateur est propriétaire du post
             if ($post->user_id !== $_SESSION['user']['id']) {
-                $_SESSION['error'] = "Vous n'avez pas accès à cette page";
+                $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
                 header('Location: /post');
                 exit;
             }
 
             // On traite le formulaire 
-            if (Form::validate($_POST, ['title', 'chapo', 'content'])) {
+            if (Form::validate($_POST, ['post_title', 'post_chapo', 'post_content'])) {
                 // On se protège contre les failles XSS
-                $title = strip_tags($_POST['title']);
-                $chapo = strip_tags($_POST['chapo']);
-                $content = strip_tags($_POST['content']);
+                $title = strip_tags($_POST['post_title']);
+                $chapo = strip_tags($_POST['post_chapo']);
+                $content = strip_tags($_POST['post_content']);
 
                 //On stock le post 
                 $postModif = new PostModel;
 
                 // On hydrate 
-                $postModif->setId($post->id)
-                    ->setTitle($title)
-                    ->setChapo($chapo)
-                    ->setContent($content);
+                $postModif->setId_post($post->id_post)
+                    ->setPost_title($title)
+                    ->setPost_Chapo($chapo)
+                    ->setPost_Content($content);
+                
+                //Je choisis la colonne concernée      
+                $columnTarget = "id_post";
 
-                // On met à jour le post    
-                $postModif->update();
+                // On met à jour le post   
+                $postModif->update($post->id_post, $columnTarget);
 
                 var_dump($postModif);
 
@@ -172,16 +183,16 @@ class PostController extends Controller
             $form = new Form;
 
             $form->startForm()
-                ->addLabelForm('title','Titre :')
-                ->addInput('text', 'title', ['id' => 'title', 'class' => 'validate', 'value' => $post->title])
+                ->addLabelForm('post_title','Titre :')
+                ->addInput('text', 'post_title', ['id' => 'title', 'class' => 'validate', 'value' => $post->post_title])
 
-                ->addLabelForm('chapo', 'chapô :')
-                ->addInput('text', 'chapo', ['id'=> 'chapo', 'class' => 'validate', 'value' => $post->chapo])
+                ->addLabelForm('post_chapo', 'chapô :')
+                ->addInput('text', 'post_chapo', ['id'=> 'chapo', 'class' => 'validate', 'value' => $post->post_chapo])
 
-                ->addLabelForm('content', 'contenu :')
-                ->addInput('text', 'content', ['id' => 'content', 'class' => 'validate', 'value' => $post->content])
+                ->addLabelForm('post_content', 'contenu :')
+                ->addInput('text', 'post_content', ['id' => 'content', 'class' => 'validate', 'value' => $post->post_content])
 
-                ->addLabelForm('image', 'image :')
+                ->addLabelForm('post_image', 'image :')
                 ->addInputFiles()
 
                 ->addButton('mettre à jour le post',['class' => 'btn waves-effect waves-light'])
@@ -191,7 +202,7 @@ class PostController extends Controller
             $this->render('post/updatePost', ['form' => $form->create()]);
 
         } else {
-            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page";
+            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
             header('Location /users/login');
             exit;
         }
@@ -205,8 +216,19 @@ class PostController extends Controller
      */
     public function deletePost(int $id)
     {
-        $postDelete = new PostModel;
-        $postDelete->delete($id);
-        header('Location: /');
+        //On verifie si l'utilisateur est connecté
+        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
+            $postDelete = new PostModel;
+
+            //Je choisis la colonne concernée      
+            $columnTarget = "id_post";
+
+            $postDelete->delete($id, $columnTarget);
+            header('Location: /post');
+        } else {
+            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
+            header('Location /users/login');
+            exit;
+        }
     }
 }

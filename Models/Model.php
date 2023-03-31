@@ -39,9 +39,9 @@ class Model extends Db
             'SELECT * FROM ' . $this->table . ' WHERE ' . $fields_list, $values)->fetchAll();
     }
 
-    public function find(int $id)
+    public function find(int $id, string $columnDbTarget = "id")
     {
-        return $this->request("SELECT * FROM $this->table WHERE id = $id")->fetch();
+        return $this->request("SELECT * FROM $this->table WHERE $columnDbTarget = $id")->fetch();
     }
 
     public function create()
@@ -72,7 +72,7 @@ class Model extends Db
         return $this->request('INSERT INTO ' . $this->table . ' (' . $fields_list . ') VALUES(' . $QuestionMark_list . ')', $values);
     }
 
-    public function update()
+    public function update(int $id, string $columnDbTarget = "id" )
     {
         $fields = [];
         $values = [];
@@ -89,19 +89,19 @@ class Model extends Db
         }
 
         //array_push($values, $this->id);
-        $values[] = $this->id; // Erreur à regler
+        //$values[] = $this->id; // Erreur à regler
+        $values[] = $id; 
         
-
         //On transforme le tableau "fields" en une chaine de caractères
         $fields_list = implode(', ', $fields);
 
         //On exécute la requete 
-        return $this->request('UPDATE ' . $this->table . ' SET ' . $fields_list . ' WHERE id = ?', $values);
+        return $this->request('UPDATE ' . $this->table . ' SET ' . $fields_list . ' WHERE '.$columnDbTarget.' = ?', $values);
     }
 
-    public function delete(int $id)
+    public function delete(int $id, string $columnDbTarget = "id")
     {
-        return $this->request("DELETE FROM $this->table WHERE id = ?", [$id]);
+        return $this->request("DELETE FROM $this->table WHERE $columnDbTarget = ?", [$id]);
     }
 
     public function request(string $sql, array $attributs = null)

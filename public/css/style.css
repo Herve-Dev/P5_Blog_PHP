@@ -1,0 +1,43 @@
+@font-face {
+    font-family: 'Heaters';
+    src: url('/css/Heaters.otf') format('truetype');
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background-color: #e3f2fd;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
+.user-form {
+    font-size: 21px;
+}
+
+.brand-logo{
+    font-family: 'Heaters', sans-serif;
+    margin-left: 20px;
+}
+
+.blog-name {
+    font-family: 'Heaters', sans-serif;
+}
+
+.container {
+    width: 100%;
+}
+
+h3, h5, h1, h2 {
+    font-family: 'Heaters', sans-serif;
+}
+  
+  

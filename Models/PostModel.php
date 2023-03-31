@@ -3,36 +3,49 @@ namespace App\Models;
 
 class PostModel extends Model
 {
-    protected $id;
+    protected $id_post;
     protected $user_id;
-    protected $title;
-    protected $chapo;
-    protected $content;
-    protected $image;
-    protected $createdAt;
-    protected $updatedAt;
+    protected $post_title;
+    protected $post_chapo;
+    protected $post_content;
+    protected $post_image;
+    protected $post_createdAt;
+    protected $post_updatedAt;
 
     public function __construct()
     {
         $this->table = 'post';
     }
 
-    /**
-     * Get the value of id
-     */ 
-    public function getId()
+    public function findPostWithcomment(int $id)
     {
-        return $this->id;
+        $req = $this->request("SELECT * FROM post LEFT JOIN comment 
+            ON post.id_post = comment.id_comment LEFT JOIN user 
+            ON post.user_id = user.id WHERE post.id_post = ?", [$id])->fetch();
+        return $req;
+    }
+
+    public function findById(int $id)
+    {
+        return $this->request("SELECT * FROM $this->table WHERE id_post = $id")->fetch();
     }
 
     /**
-     * Set the value of id
+     * Get the value of id_post
+     */ 
+    public function getId_post()
+    {
+        return $this->id_post;
+    }
+
+    /**
+     * Set the value of id_post
      *
      * @return  self
      */ 
-    public function setId($id)
+    public function setId_post($id_post)
     {
-        $this->id = $id;
+        $this->id_post = $id_post;
 
         return $this;
     }
@@ -58,121 +71,121 @@ class PostModel extends Model
     }
 
     /**
-     * Get the value of title
+     * Get the value of post_title
      */ 
-    public function getTitle()
+    public function getPost_title()
     {
-        return $this->title;
+        return $this->post_title;
     }
 
     /**
-     * Set the value of title
+     * Set the value of post_title
      *
      * @return  self
      */ 
-    public function setTitle($title)
+    public function setPost_title($post_title)
     {
-        $this->title = $title;
+        $this->post_title = $post_title;
 
         return $this;
     }
 
     /**
-     * Get the value of chapo
+     * Get the value of post_chapo
      */ 
-    public function getChapo()
+    public function getPost_chapo()
     {
-        return $this->chapo;
+        return $this->post_chapo;
     }
 
     /**
-     * Set the value of chapo
+     * Set the value of post_chapo
      *
      * @return  self
      */ 
-    public function setChapo($chapo)
+    public function setPost_chapo($post_chapo)
     {
-        $this->chapo = $chapo;
+        $this->post_chapo = $post_chapo;
 
         return $this;
     }
 
     /**
-     * Get the value of content
+     * Get the value of post_content
      */ 
-    public function getContent()
+    public function getPost_content()
     {
-        return $this->content;
+        return $this->post_content;
     }
 
     /**
-     * Set the value of content
+     * Set the value of post_content
      *
      * @return  self
      */ 
-    public function setContent($content)
+    public function setPost_content($post_content)
     {
-        $this->content = $content;
+        $this->post_content = $post_content;
 
         return $this;
     }
 
     /**
-     * Get the value of image
+     * Get the value of post_image
      */ 
-    public function getImage()
+    public function getPost_image()
     {
-        return $this->image;
+        return $this->post_image;
     }
 
     /**
-     * Set the value of image
+     * Set the value of post_image
      *
      * @return  self
      */ 
-    public function setImage($image)
+    public function setPost_image($post_image)
     {
-        $this->image = $image;
+        $this->post_image = $post_image;
 
         return $this;
     }
 
     /**
-     * Get the value of createdAt
+     * Get the value of post_createdAt
      */ 
-    public function getCreatedAt()
+    public function getPost_createdAt()
     {
-        return $this->createdAt;
+        return $this->post_createdAt;
     }
 
     /**
-     * Set the value of createdAt
+     * Set the value of post_createdAt
      *
      * @return  self
      */ 
-    public function setCreatedAt($createdAt)
+    public function setPost_createdAt($post_createdAt)
     {
-        $this->createdAt = $createdAt;
+        $this->post_createdAt = $post_createdAt;
 
         return $this;
     }
 
     /**
-     * Get the value of updatedAt
+     * Get the value of post_updatedAt
      */ 
-    public function getUpdatedAt()
+    public function getPost_updatedAt()
     {
-        return $this->updatedAt;
+        return $this->post_updatedAt;
     }
 
     /**
-     * Set the value of updatedAt
+     * Set the value of post_updatedAt
      *
      * @return  self
      */ 
-    public function setUpdatedAt($updatedAt)
+    public function setPost_updatedAt($post_updatedAt)
     {
-        $this->updatedAt = $updatedAt;
+        $this->post_updatedAt = $post_updatedAt;
 
         return $this;
     }

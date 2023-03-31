@@ -1,3 +1,4 @@
 <h1>Inscription</h1>
-<?= $registerForm ?>
-<a href="/user/login"> déja inscrit</a>
+<?= $registerForm ?><br>
+<a class="user-form" href="/user/login"> déjà inscrit</a>
+
