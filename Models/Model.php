@@ -82,14 +82,14 @@ class Model extends Db
             // UPDATE user SET (firstName = ?, lastName = ?, email = ?, biography = ?, avatar = ?, authenticated = ?, role = ?, registeredAt = ? WHERE id = ?)
             // bindValue(admin, valeur)
 
-            if ($value !== null && $field != 'db' && $field != 'table' && $field != 'id') {
+            if ($value !== null && $field != 'db' && $field != 'table') {
                 array_push($fields, "$field = ?");
                 array_push($values, $value);
             }
         }
 
         //array_push($values, $this->id);
-        $values[] = $this;
+        $values[] = $this->id; // Erreur à regler
         
 
         //On transforme le tableau "fields" en une chaine de caractères
@@ -101,7 +101,6 @@ class Model extends Db
 
     public function delete(int $id)
     {
-        echo "utilisateur $id supprimé";
         return $this->request("DELETE FROM $this->table WHERE id = ?", [$id]);
     }
 
