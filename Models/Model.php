@@ -34,8 +34,7 @@ class Model extends Db
         $fields_list = implode(' AND ', $fields);
 
         //On exécute la requete 
-        return $this->request(
-            'SELECT * FROM ' . $this->table . ' WHERE ' . $fields_list, $values)->fetchAll();
+        return $this->request("SELECT * FROM $this->table WHERE $fields_list", $values)->fetchAll();
     }
 
     public function find(int $id, string $columnDbTarget = "id")
@@ -93,7 +92,7 @@ class Model extends Db
         $fields_list = implode(', ', $fields);
 
         //On exécute la requete 
-        return $this->request('UPDATE ' . $this->table . ' SET ' . $fields_list . ' WHERE '.$columnDbTarget.' = ?', $values);
+        return $this->request("UPDATE $this->table SET $fields_list WHERE $columnDbTarget = ?", $values);
     }
 
     public function delete(int $id, string $columnDbTarget = "id")
