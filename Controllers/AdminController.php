@@ -62,7 +62,6 @@ class AdminController extends Controller
         } else {
             $_SESSION['erreur'] = "Vous n'avez pas accès à cette zone";
             header('Location: /');
-            exit;
         }
     }
 
@@ -73,7 +72,6 @@ class AdminController extends Controller
         } else {
             $_SESSION['erreur'] = "Vous n'avez pas accès à cette zone";
             header('Location: /');
-            exit;
         }
     }
 }
