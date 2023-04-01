@@ -73,7 +73,6 @@ class PostController extends Controller
         $comment = $commentModel->findById($idComment);
         $result = $comment->comment_content;
         echo json_encode($result);
-        die();
     }
 
 

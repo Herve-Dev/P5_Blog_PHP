@@ -34,8 +34,7 @@ class Model extends Db
         $fields_list = implode(' AND ', $fields);
 
         //On exécute la requete 
-        return $this->request(
-            'SELECT * FROM ' . $this->table . ' WHERE ' . $fields_list, $values)->fetchAll();
+        return $this->request("SELECT * FROM $this->table WHERE $fields_list", $values)->fetchAll();
     }
 
     public function find(int $id, string $columnDbTarget = "id")
@@ -55,7 +54,7 @@ class Model extends Db
             // INSERT INTO * FROM user (firstName, lastName, email, biography, avatar, authenticated, role, registeredAt) VALUES (?,?,?,?,?,?,?,?)
             // bindValue(admin, valeur)
 
-            if ($value != null && $field != 'db' && $field != 'table' && $field != 'id') {
+            if ($value !== null && $field !== 'db' && $field !== 'table' && $field !== 'id') {
                 array_push($fields, $field);
                 array_push($QuestionMark, "?");
                 array_push($values, $value);
@@ -87,15 +86,13 @@ class Model extends Db
             }
         }
 
-        //array_push($values, $this->id);
-        //$values[] = $this->id; // Erreur à regler
         $values[] = $id; 
         
         //On transforme le tableau "fields" en une chaine de caractères
         $fields_list = implode(', ', $fields);
 
         //On exécute la requete 
-        return $this->request('UPDATE ' . $this->table . ' SET ' . $fields_list . ' WHERE '.$columnDbTarget.' = ?', $values);
+        return $this->request("UPDATE $this->table SET $fields_list WHERE $columnDbTarget = ?", $values);
     }
 
     public function delete(int $id, string $columnDbTarget = "id")

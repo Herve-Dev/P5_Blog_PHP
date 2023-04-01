@@ -46,7 +46,6 @@ class PostCommentController extends Controller
                 //On redirige
                 $_SESSION['message'] = "Votre commentaire a été enregistré avec succès l'admin l'acceptera après modération";
                 header("Location: /post/read/$idPost");
-                exit;
             }
         }
     }
@@ -68,7 +67,6 @@ class PostCommentController extends Controller
                 http_response_code(404);
                 $_SESSION['error'] = "Le post recherché n'existe pas";
                 header('Location: /post');
-                exit;
             }
 
             // On vérifie si l'utilisateur est propriétaire du commentaire
@@ -77,7 +75,6 @@ class PostCommentController extends Controller
             if ($comment->user_id !== $userSessionId) {
                 $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
                 header('Location: /post');
-                exit;
             }
 
             // On traite le formulaire 
@@ -94,7 +91,6 @@ class PostCommentController extends Controller
                 //On redirige
                 $_SESSION['message'] = "Votre post a été modifié avec succès";
                 header('Location: /post');
-                exit;
             }
             
             $formUpdateComment = new Form;
