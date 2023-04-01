@@ -10,7 +10,6 @@ class PostCommentController extends Controller
     {
         // On instancie le modèle correspondant à la table
         $postCommentModel = new PostCommentModel;
-        
 
         //On va chercher touts les commentaires
         $comments = $postCommentModel->findAll();
@@ -19,10 +18,10 @@ class PostCommentController extends Controller
         $this->render('comment/index', ['comments' => $comments ]);
     }
 
-    public function addComment(int $idPost)
+    public static function addComment(int $idPost)
     {
         //On vérifie si lutilisateur est connecté
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id'])) {
+        if (AdminController::isUser()) {
             //l'utilisateur est connecté
 
             if (Form::validate($_POST, ['comment_content'])) {
@@ -35,9 +34,10 @@ class PostCommentController extends Controller
                 $postCommentModel = new PostCommentModel;
 
                 // On hydrate
+                $userSessionId = $_SESSION['user']['id'];
                 $postCommentModel->setComment_Content($comment)
                     ->setId_post($idPost)
-                    ->setUser_id($_SESSION['user']['id'])
+                    ->setUser_id($userSessionId)
                     ->setComment_CreatedAt(date_create('now', timezone_open('Europe/Paris'))->format('Y-m-d H:i:s'));
 
                 // On enregistre
@@ -48,18 +48,78 @@ class PostCommentController extends Controller
                 header("Location: /post/read/$idPost");
                 exit;
             }
+        }
+    }
 
-            $form = new Form;
+    public function updateComment(int $idComment)
+    {
+        //On verifie si l'utilisateur est connecté
+        if (AdminController::isUser()) {
+            
+            //On va vérifier si le commentaire existe dans la base
+            // On instancie notre modèle
+           $commentModel = new PostCommentModel;
 
-            $form->startForm()
-                ->addLabelForm('comment_content','Votre commentaire :')
-                ->addInput('text', 'comment_content', ['id' => 'comment', 'class' => 'validate'])
+            //On cherche le commentaire avec l'id
+            $comment = $commentModel->findById($idComment);
 
-                ->addButton('Ajouter un nouveau commentaire',['class' => 'btn waves-effect waves-light'])
-                ->endForm();
+            //Si l'annonce n'existe pas, on retourne à la liste des posts
+            if (!$comment) {
+                http_response_code(404);
+                $_SESSION['error'] = "Le post recherché n'existe pas";
+                header('Location: /post');
+                exit;
+            }
 
+            // On vérifie si l'utilisateur est propriétaire du commentaire
+            $userSessionId = $_SESSION['user']['id'];
 
-            $this->render('comment/addComment', ['formComment' => $form->create()]);
+            if ($comment->user_id !== $userSessionId) {
+                $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
+                header('Location: /post');
+                exit;
+            }
+
+            // On traite le formulaire 
+            if (Form::validate($_POST, ['comment_content'])) {
+                // On se protège contre les failles XSS
+                $commentContent = strip_tags($_POST['comment_content']);
+
+                //On stock le comment 
+                $commentModif = new PostCommentModel;
+
+                // On met à jour le commentaire   
+                $commentModif->updateComment($idComment, $commentContent);
+
+                //On redirige
+                $_SESSION['message'] = "Votre post a été modifié avec succès";
+                header('Location: /post');
+                exit;
+            }
+            
+            $formUpdateComment = new Form;
+
+            $formUpdateComment->startForm()
+                ->addLabelForm('comment_content','Commentaire :')
+                ->addInput('text', 'comment_content', ['id' => 'title', 'class' => 'validate', 'value' => $comment->comment_content])
+
+                ->addButton('mettre à jour mon commentaire',['class' => 'btn waves-effect waves-light'])
+                ->endForm();   
+            // On envoie à la vue 
+            $this->render('comment/updateComment', ['form' => $formUpdateComment->create()]);
+
+        } 
+    }
+
+    public function deleteComment(int $idComment)
+    {
+        //On verifie si l'utilisateur est connecté
+        if (AdminController::isUser()) {
+            $commentDelete = new PostCommentModel;
+
+            $commentDelete->deleteComment($idComment);
+
+            header('Location: /post');
         }
     }
 }

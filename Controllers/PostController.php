@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Core\Form;
+use App\Models\PostCommentModel;
 use App\Models\PostModel;
 
 class PostController extends Controller
@@ -29,25 +30,70 @@ class PostController extends Controller
      * @param integer $id
      * @return void
      */
-    public function read(int $id)
+    public function read(int $idPost, string $valueBind = '')
     {
         //On instancie le modèle
         $postModel = new PostModel;
 
-        //On va chercher 1 post
-        //$post = $postModel->find($id);
+        //On cherche l'autheur lié au post
+        $post = $postModel->findPostWithAuthor($idPost);
 
-        //On cherche les commentaires lier au post
-        $post = $postModel->findPostWithcomment($id);
+        //On cherche les commentaires lié au post
+        $comments = $postModel->findPostWithComment($idPost);
+
+        $formComment = new Form;
+        $formComment->startForm()
+            ->addLabelForm('comment_content','Votre commentaire :')
+            ->addTextarea('comment_content', ['id' => 'comment', 'class' => 'validate'])
+
+            ->addButton('Ajouter un nouveau commentaire',['class' => 'btn waves-effect waves-light'])
+            ->endForm();
+        $formAddComment = $formComment->create();
+        
+        //J'apelle la fonction addComment pour le collapsible
+        PostCommentController::addComment($idPost); 
+        
+        $formUpdateComment = new Form;
+        $formUpdateComment->startForm()
+            ->addLabelForm('comment_content', 'Commentaire :')
+            ->addInput('text', 'comment_content', ['id' => 'update-input', 'class' => 'validate comment-input' , 'value' => $valueBind])
+
+            ->addButton('mettre à jour mon commentaire', ['class' => 'btn waves-effect waves-light'])
+            ->endForm();
+        $formUpdate = $formUpdateComment->create();  
 
         //On envoie à la vue
-        $this->render('post/read', compact('post'));
+        $this->render('/post/read', compact('post','comments', 'formAddComment'));
+        
+    }
+
+    public function findCom(int $idComment)
+    {
+        $commentModel = new PostCommentModel;
+        $comment = $commentModel->findById($idComment);
+        $result = $comment->comment_content;
+        echo json_encode($result);
+        die();
+    }
+
+
+    public function updateCom(int $idComment, string $data)
+    {
+        $newData = strip_tags(str_replace("_", " ", $data));
+        $commentModel = new PostCommentModel;
+        $update = $commentModel->updateComment($idComment, $newData);
+
+        $response = array(
+            'success' => 'Votre commentaire a été mis à jour'
+        );
+
+        echo json_encode($response);
     }
 
     public function addPost()
     {
         //On vérifie si lutilisateur est connecté et qu'il a un role admin
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
+        if (AdminController::isAdmin()) {
             //l'utilisateur est connecté
 
             if (Form::validate($_POST,['post_title', 'post_chapo', 'post_content'])) {
@@ -61,8 +107,10 @@ class PostController extends Controller
                 // On instancie notre modèle
                 $postModel = new PostModel;
 
+                $fileImage = $_FILES['post_image'];
+
                 //A REFACTORISER
-                if ($_FILES['post_image']) {
+                if ($fileImage) {
                     $name = $_FILES["post_image"]['name'];
                     $folder = "image/post_image/$name";
 
@@ -88,7 +136,6 @@ class PostController extends Controller
                 //On redirige
                 $_SESSION['message'] = "Votre post a été enregistré avec succès";
                 header('Location: /post');
-                exit;
             }
 
             $form = new Form;
@@ -110,9 +157,6 @@ class PostController extends Controller
                 ->endForm();
 
             $this->render('post/addPost', ['form' => $form->create()]);
-        } else {
-            $_SESSION['error'] = "Acces non autorisé";
-            header('Location: /');
         }
     }
 
@@ -125,28 +169,27 @@ class PostController extends Controller
     public function updatePost(int $id)
     {
         //On verifie si l'utilisateur est connecté
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
+        if (AdminController::isAdmin()) {
             
             //On va vérifier si le post existe dans la base
             // On instancie notre modèle
             $postModel = new PostModel;
 
-            //On cherche l'annonce avec l'id
+            //On cherche le post avec l'id
             $post = $postModel->findById($id);
 
-            //Si l'annonce n'existe pas, on retourne à la liste des posts
+            //Si le post n'existe pas, on retourne à la liste des posts
             if (!$post) {
                 http_response_code(404);
                 $_SESSION['error'] = "Le post recherché n'existe pas";
                 header('Location: /post');
-                exit;
             }
 
             // On vérifie si l'utilisateur est propriétaire du post
-            if ($post->user_id !== $_SESSION['user']['id']) {
+            $userSessionId = $_SESSION['user']['id'];
+            if ($post->user_id !== $userSessionId) {
                 $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
                 header('Location: /post');
-                exit;
             }
 
             // On traite le formulaire 
@@ -171,12 +214,10 @@ class PostController extends Controller
                 // On met à jour le post   
                 $postModif->update($post->id_post, $columnTarget);
 
-                var_dump($postModif);
 
                 //On redirige
                 $_SESSION['message'] = "Votre post a été modifié avec succès";
                 header('Location: /post');
-                exit;
 
             }
 
@@ -200,11 +241,6 @@ class PostController extends Controller
 
             // On envoie à la vue 
             $this->render('post/updatePost', ['form' => $form->create()]);
-
-        } else {
-            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
-            header('Location /users/login');
-            exit;
         }
     }
 
@@ -216,19 +252,21 @@ class PostController extends Controller
      */
     public function deletePost(int $id)
     {
-        //On verifie si l'utilisateur est connecté
-        if (isset($_SESSION['user']) && !empty($_SESSION['user']['id']) && $_SESSION['user']['role'] === 'ADMIN') {
+        //On verifie si l'utilisateur est connecté et est admin
+        if (AdminController::isAdmin()) {
             $postDelete = new PostModel;
 
-            //Je choisis la colonne concernée      
-            $columnTarget = "id_post";
-
-            $postDelete->delete($id, $columnTarget);
+            $postImage = $postDelete->findById($id);
+            $defaultImage = "image/post_image/default_post.jpg";
+            $imagePost =  'image/post_image/'.$postImage->post_image;
+            
+            if ($imagePost !== $defaultImage) {
+                if (file_exists($imagePost)) {
+                    unlink($imagePost);
+                }
+            }
+            $postDelete->deleteWithComment($id);
             header('Location: /post');
-        } else {
-            $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
-            header('Location /users/login');
-            exit;
-        }
+        } 
     }
 }

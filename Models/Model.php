@@ -32,7 +32,6 @@ class Model extends Db
 
         //On transforme le tableau "fields" en une chaine de caractères
         $fields_list = implode(' AND ', $fields);
-        var_dump($fields_list);
 
         //On exécute la requete 
         return $this->request(

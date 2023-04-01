@@ -17,17 +17,26 @@ class PostModel extends Model
         $this->table = 'post';
     }
 
-    public function findPostWithcomment(int $id)
+    public function findPostWithAuthor(int $id)
     {
-        $req = $this->request("SELECT * FROM post LEFT JOIN comment 
-            ON post.id_post = comment.id_comment LEFT JOIN user 
-            ON post.user_id = user.id WHERE post.id_post = ?", [$id])->fetch();
-        return $req;
+        return $this->request("SELECT * FROM post LEFT JOIN user 
+                            ON user.id = post.user_id WHERE post.id_post = ?", [$id])->fetch();
+    }
+
+    public function findPostWithComment(int $id)
+    {
+        return $this->request("SELECT * FROM comment LEFT JOIN user
+                            ON user.id = comment.user_id WHERE comment.id_post = ? AND comment.comment_active = 1", [$id])->fetchAll();
     }
 
     public function findById(int $id)
     {
         return $this->request("SELECT * FROM $this->table WHERE id_post = $id")->fetch();
+    }
+
+    public function deleteWithComment(int $id)
+    {
+        return $this->request("DELETE post FROM post WHERE post.id_post = ?", [$id]);
     }
 
     /**

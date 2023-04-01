@@ -27,8 +27,7 @@ class UserController extends Controller
             if (!$userArray) {
                 // On envoie un message de session
                 $_SESSION['error'] = "l'adresse e-mail et/ou le mot de passe est incorrect";
-                header('Location: user/login');
-                exit;
+                header('Location: /user/login');
             }
 
             // L'utilisateur existe
@@ -40,12 +39,10 @@ class UserController extends Controller
                 // On crée la session
                 $user->setSession();
                 header('Location: /');
-                exit;
             }else{
                 // Mauvais mot de passe 
                 $_SESSION['error'] = "l'adresse e-mail et/ou le mot de passe est incorrect";
                 header('Location: /user/login');
-                exit;
             }
 
        }
@@ -84,7 +81,7 @@ class UserController extends Controller
             ->addButton("m'inscrire", ['class' => 'btn waves-effect waves-light'])
             ->endForm();
 
-        $this->render('user/register', ['registerForm' => $form->create()]);
+        $this->render('/user/register', ['registerForm' => $form->create()]);
         
         // On vérifie si le formulaire est valide
         if (Form::validate($_POST, ['username','email', 'password', 'confirmPassword'])) {
@@ -118,13 +115,13 @@ class UserController extends Controller
                     ->setPassword($passHash);
                 
                 //On stock l'utilisateur
-                //$newUser->create();
+                $newUser->create();
+
                 
                 $cryptParamURL = Utils::encodeMailURL($email);
                 $subject = "Authentification de votre profil";
                 $message = 'Cliquez sur le lien pour vous authentifier <a href="http://p5blogphp/email/index/'.$cryptParamURL.'"> Valider mon inscription</a>';
                 
-
                 $sendMail = new SendMail;
                 $sendMail->sendmail($email, $message, $subject);
             }
@@ -139,7 +136,6 @@ class UserController extends Controller
     public function logout(){
         unset($_SESSION['user']);
         header('Location: /');
-        exit;
     }
 
     public function updatePassword(int $id_user)
@@ -186,7 +182,6 @@ class UserController extends Controller
         } else {
             $_SESSION['error'] = "Une erreur est survenue";
             header('Location: /');
-            exit;
         }
     }
 
@@ -218,7 +213,6 @@ class UserController extends Controller
 
         }else{
             $_SESSION['error'] = "Une erreur est survenue";
-            exit;
         }
     }
 
@@ -268,7 +262,5 @@ class UserController extends Controller
                 
                 }
             }
-
-        
     }
 }

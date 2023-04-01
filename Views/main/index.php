@@ -1,4 +1,4 @@
-<div>
+<!--<div>
     <h1 class="blog-name">HERVE BLOG</h1>
     <h2>Bienvenue à toi</h2>
     <blockquote>
@@ -41,5 +41,17 @@
         </div>
       </li>
     </ul>
-  </div><br>
+  </div><br>-->
 
+<div class="parallax-container">
+  <div class="parallax"><img src="../image/slider-home/work-harder.webp"></div>
+</div>
+<div class="section white">
+  <div class="row container">
+    <h2 class="header">HERVE BLOG</h2>
+    <p class="grey-text text-darken-3 lighten-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus iste nobis, aperiam illum fugit deleniti eaque. Autem ipsam provident atque explicabo sit assumenda aut praesentium maxime ratione rerum culpa, cum quo, suscipit delectus adipisci vero fugiat perspiciatis nulla impedit quisquam quaerat cupiditate vel molestias. Explicabo perspiciatis in est nostrum, voluptatem maiores, ullam sint nihil molestiae et alias unde vitae animi voluptatum iusto maxime temporibus itaque at quas dolorum! Inventore, doloribus!</p>
+  </div>
+</div>
+<div class="parallax-container">
+  <div class="parallax"><img src="../image/slider-home/sci-fi-town.webp"></div>
+</div>

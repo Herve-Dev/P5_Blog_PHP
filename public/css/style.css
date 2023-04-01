@@ -21,6 +21,10 @@ h1 {
 
 .link-form {
     font-size: 18px;
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    margin-left: 25%;
 }
 
 .brand-logo{
@@ -50,3 +54,30 @@ h3, h5, h1, h2 {
 .container-form > form {
     width: 50%;
 }
+
+.content-post {
+    border: solid 3px black;
+    display: flex;
+}
+
+@media screen and (min-width: 993px){
+    .responsive-nav {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 993px){ 
+    .nav {
+        display: none;
+    }
+}
+
+.parallax-container {
+    width: 100%;
+}
+
+.container{
+    max-width: none;
+}
+    
+

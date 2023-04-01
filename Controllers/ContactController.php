@@ -30,7 +30,7 @@ class ContactController extends Controller
 
             $_SESSION['message'] = "Votre message a été envoyer avec succès";
         } else {
-            $_SESSION['error'] = "Une érreur c'est produite réessayer ";
+            $_SESSION['error'] = "Une érreur c'est produite réessayer";
         } 
     }
 

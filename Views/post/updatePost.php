@@ -1,2 +1,4 @@
 <h1>Modifier le post</h1>
-<?= $form ?>
+<div class="container-form">
+    <?= $form ?>
+</div>    
