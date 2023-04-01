@@ -136,7 +136,6 @@ class PostController extends Controller
                 //On redirige
                 $_SESSION['message'] = "Votre post a été enregistré avec succès";
                 header('Location: /post');
-                exit;
             }
 
             $form = new Form;
