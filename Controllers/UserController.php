@@ -28,7 +28,6 @@ class UserController extends Controller
                 // On envoie un message de session
                 $_SESSION['error'] = "l'adresse e-mail et/ou le mot de passe est incorrect";
                 header('Location: /user/login');
-                exit;
             }
 
             // L'utilisateur existe
@@ -40,12 +39,10 @@ class UserController extends Controller
                 // On crée la session
                 $user->setSession();
                 header('Location: /');
-                exit;
             }else{
                 // Mauvais mot de passe 
                 $_SESSION['error'] = "l'adresse e-mail et/ou le mot de passe est incorrect";
                 header('Location: /user/login');
-                exit;
             }
 
        }
@@ -139,7 +136,6 @@ class UserController extends Controller
     public function logout(){
         unset($_SESSION['user']);
         header('Location: /');
-        exit;
     }
 
     public function updatePassword(int $id_user)
@@ -186,7 +182,6 @@ class UserController extends Controller
         } else {
             $_SESSION['error'] = "Une erreur est survenue";
             header('Location: /');
-            exit;
         }
     }
 
@@ -218,7 +213,6 @@ class UserController extends Controller
 
         }else{
             $_SESSION['error'] = "Une erreur est survenue";
-            exit;
         }
     }
 

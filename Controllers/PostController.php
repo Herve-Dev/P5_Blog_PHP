@@ -184,7 +184,6 @@ class PostController extends Controller
                 http_response_code(404);
                 $_SESSION['error'] = "Le post recherché n'existe pas";
                 header('Location: /post');
-                exit;
             }
 
             // On vérifie si l'utilisateur est propriétaire du post
@@ -192,7 +191,6 @@ class PostController extends Controller
             if ($post->user_id !== $userSessionId) {
                 $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
                 header('Location: /post');
-                exit;
             }
 
             // On traite le formulaire 
@@ -217,12 +215,10 @@ class PostController extends Controller
                 // On met à jour le post   
                 $postModif->update($post->id_post, $columnTarget);
 
-                var_dump($postModif);
 
                 //On redirige
                 $_SESSION['message'] = "Votre post a été modifié avec succès";
                 header('Location: /post');
-                exit;
 
             }
 
