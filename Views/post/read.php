@@ -25,7 +25,7 @@
         <?php
 
         if ($_SESSION['user']['role'] === 'ADMIN') : ?>
-          <a href="post/deletePost/<?= $post->id_post ?>">Supprimez le post</a>
+          <a href="/post/deletePost/<?= $post->id_post ?>">Supprimez le post</a>
         <?php endif; ?>
       </div>
     </div>

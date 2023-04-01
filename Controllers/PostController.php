@@ -63,7 +63,7 @@ class PostController extends Controller
         $formUpdate = $formUpdateComment->create();  
 
         //On envoie à la vue
-        $this->render('post/read', compact('post','comments', 'formAddComment'));
+        $this->render('/post/read', compact('post','comments', 'formAddComment'));
         
     }
 
@@ -88,7 +88,6 @@ class PostController extends Controller
         );
 
         echo json_encode($response);
-
     }
 
     public function addPost()
@@ -108,8 +107,10 @@ class PostController extends Controller
                 // On instancie notre modèle
                 $postModel = new PostModel;
 
+                $fileImage = $_FILES['post_image'];
+
                 //A REFACTORISER
-                if ($_FILES['post_image']) {
+                if ($fileImage) {
                     $name = $_FILES["post_image"]['name'];
                     $folder = "image/post_image/$name";
 
@@ -260,10 +261,16 @@ class PostController extends Controller
         if (AdminController::isAdmin()) {
             $postDelete = new PostModel;
 
-            //Je choisis la colonne concernée      
-            $columnTarget = "id_post";
-
-            $postDelete->delete($id, $columnTarget);
+            $postImage = $postDelete->findById($id);
+            $defaultImage = "image/post_image/default_post.jpg";
+            $imagePost =  'image/post_image/'.$postImage->post_image;
+            
+            if ($imagePost !== $defaultImage) {
+                if (file_exists($imagePost)) {
+                    unlink($imagePost);
+                }
+            }
+            $postDelete->deleteWithComment($id);
             header('Location: /post');
         } 
     }
