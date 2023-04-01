@@ -77,6 +77,7 @@
                         <li><a class="grey-text text-lighten-3" href="#!">Linkedin</a></li>
                         <li><a class="grey-text text-lighten-3" href="#!">Github</a></li>
                         <li><a class="grey-text text-lighten-3" href="/contact/sendMailContact">Me contacter</a></li>
+                        <li><img src="https://insight.symfony.com/projects/3ebc1b3c-786f-4e72-b9fe-80e4c018cc24/mini.svg" alt="symfony_insight_medal_silver"></li>
                     </ul>
                 </div>
             </div>
