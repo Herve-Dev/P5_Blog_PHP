@@ -55,7 +55,7 @@ class Form
         //On boucle sur le tableau d'attributs
         foreach($attributs as $attribut => $value){
             //Si l'attribut est dans la liste des attributs courts
-            if (in_array($attribut, $shortAttributs) && $value == true) {
+            if (in_array($attribut, $shortAttributs) && $value === true) {
                 $str .=" $attribut";
             }else {
                 // On ajoute attribut='valeur'
