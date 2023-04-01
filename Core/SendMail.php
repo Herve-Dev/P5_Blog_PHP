@@ -22,7 +22,6 @@ class SendMail
             $mail->SMTPAuth = true;
             $mail->Username = getenv('EMAIL_SMTP');
             $mail->Password = getenv('PASS_SMTP');
-            //$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port = 1025;
 
             // Charset
@@ -36,9 +35,8 @@ class SendMail
 
             //Contenu
             $mail->isHTML(true);
-            $mail->Subject = $subject; /*"Authentification de votre profil";*/
-            $mail->Body = $message ; /*'Cliquez sur le lien pour vous authentifier <a href="http://p5blogphp/email/index/'.$token.'"> Valider mon inscription</a>';*/
-
+            $mail->Subject = $subject;
+            $mail->Body = $message; 
             // On envoie
             $mail->send();
             echo "<script type='text/javascript'>M.toast({html: 'Un lien de vérfication a été envoyé à .'$newUserMail'.'});</script>";
