@@ -212,18 +212,18 @@ class Form
      *
      * @return self
      */
-    public function addInputFiles()
+    public function addInputFiles(string $name)
     {
         $this->formCode .=
-        '<div class="file-field input-field">
-            <div class="btn">
+        "<div class='file-field input-field'>
+            <div class='btn'>
                 <span>Image</span>
-                <input type="file" id="image" name="post_image">
+                <input type='file' id='image' name='$name'>
             </div>
-            <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" name="post_image">
+            <div class='file-path-wrapper'>
+                <input class='file-path validate' type='text' name='$name'>
             </div>
-        </div>';
+        </div>";
 
       return $this;
     }

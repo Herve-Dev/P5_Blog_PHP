@@ -39,7 +39,7 @@
         <div class="card blue-grey darken-1">
           <div class="card-content white-text">
             <p id="comment-<?= $comment->id_comment ?>"> <?= $comment->comment_content ?></p>
-            <p>Auteur du commentaire : <?= $comment->username ?> </p>
+            <p>Auteur du commentaire : <a href="/Profil/profilUser/<?= $comment->user_id ?>"> <?= $comment->username ?> </a></p>
           </div>
           <div class="card-action">
             <?php if ($comment->user_id === $_SESSION['user']['id']) : ?>

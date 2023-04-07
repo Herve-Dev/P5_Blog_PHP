@@ -24,6 +24,4 @@ function activeComment() {
     .catch((err) => {
       console.log(err);
     });
-
-     /*M.toast({ html: response.success, classes: "green" })*/
 }

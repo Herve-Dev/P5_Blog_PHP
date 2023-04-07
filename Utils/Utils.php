@@ -33,4 +33,19 @@ class Utils
         $base64replace = str_replace(['+', '=', '/'],[''], $base64Email);
         return $base64replace;
     }
+
+    public static function msgFlash(string $msg)
+    {
+        $message = '<div class="row msg-flash">
+                        <div class="col s12 m5">
+                            <div class="card-panel teal">
+                                <span class="white-text">
+                                    '.$msg.'
+                                </span>
+                            </div>
+                        </div>
+                    </div>';
+
+        echo $message;            
+    }
 }

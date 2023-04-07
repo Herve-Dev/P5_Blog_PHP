@@ -11,30 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances = M.Dropdown.init(elems);
 });
 
-/*window.onload = async () => {
-  let buttons = document.querySelectorAll(".switch-button")
-  console.log(buttons);
-  for (let button of buttons) {
-    button.addEventListener("click", activeComment)
-  }
-}
-
-function activeComment() {
-  let xmlhttp = new XMLHttpRequest;
-  xmlhttp.open('GET', '/admin/activeComment/'+this.dataset.id)
-  xmlhttp.send()
-
-  console.log('ok');
-
-  const urlFetch = '/admin/activeComment/'+this.dataset.id
-  fetch(urlFetch, {method: 'GET'})
-  .then((response => response.json() ))
-    .then(response => M.toast({html: response.success, classes: "green"}))
-    .catch((err) => {
-        console.log(err);
-    });
-}*/
-
 document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('.sidenav');
   var instances = M.Sidenav.init(elems);
@@ -69,6 +45,10 @@ function FormUpdateComment() {
   const dataForInput = document.getElementById(`comment-${dataset}`).innerText;
   const form = new Form(dataset, dataForInput)
 
+}
+
+function msgAddPost() {
+  M.toast({ html: '<p> Publication ajoutée avec succès </p>', classes: "green" })
 }
 
 

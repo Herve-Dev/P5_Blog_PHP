@@ -12,6 +12,8 @@
             <li><a href="/post">Publications</a></li>
             <li><a href="/image/Cv/Intégrateur_Developpeur_Web.pdf" download>curriculum vitae</a></li>
             <li><a href="/user/updatePassword/<?php echo $_SESSION['user']['id'] ?>">Modifier mon mot de passe</a></li>
+            <li><a href="/Profil/updateProfil/<?php echo $_SESSION['user']['id'] ?>">Modifier mon profil</a></li>
+            <li><a href="/Profil/profilUser/<?php echo $_SESSION['user']['id'] ?>">Mon espace</a></li>
             <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
                 <li><a href="/admin/index">Espace administration</a></li>
             <?php endif; ?>
