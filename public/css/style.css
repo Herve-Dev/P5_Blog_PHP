@@ -46,6 +46,8 @@ h3, h5, h1, h2 {
 
 .container-form {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     margin-top: 100px;
     width: 100%;
@@ -53,6 +55,7 @@ h3, h5, h1, h2 {
 
 .container-form > form {
     width: 50%;
+    padding: 30px;
 }
 
 .content-post {
@@ -70,6 +73,12 @@ h3, h5, h1, h2 {
     .nav {
         display: none;
     }
+
+    .msg-flash {
+        position: absolute;
+        top: 77vh;
+        width: 90%;
+    }
 }
 
 .parallax-container {
@@ -80,4 +89,9 @@ h3, h5, h1, h2 {
     max-width: none;
 }
     
+.msg-flash {
+    position: absolute;
+    top: 81vh;
+    width: 50%;
+}
 

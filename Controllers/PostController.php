@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Core\Form;
 use App\Models\PostCommentModel;
 use App\Models\PostModel;
+use App\Utils\Utils;
 
 class PostController extends Controller
 {
@@ -108,18 +109,15 @@ class PostController extends Controller
 
                 $fileImage = $_FILES['post_image'];
 
-                //A REFACTORISER
+                //condition contrôle d'images
                 if ($fileImage) {
                     $name = $_FILES["post_image"]['name'];
                     $folder = "image/post_image/$name";
 
-                    if (file_exists($folder)) {
-                        $postModel->setPost_image($name);
-
-                    }else{
-                        $tempname = $_FILES["post_image"]["tmp_name"];
-                        move_uploaded_file($tempname,$folder);
-                        $postModel->setPost_image($name);
+                    if (!file_exists($folder)) {
+                       $tempname = $_FILES["post_image"]["tmp_name"];
+                       move_uploaded_file($tempname,$folder);
+                       $postModel->setPost_image($name);
                     }
                 }
 
@@ -133,8 +131,9 @@ class PostController extends Controller
                 $postModel->create();
 
                 //On redirige
-                $_SESSION['message'] = "Votre post a été enregistré avec succès";
-                header('Location: /post');
+                $msg = "Votre post a été enregistré avec succès";
+                Utils::msgFlash($msg);
+                header('Refresh: 1; /post');
             }
 
             $form = new Form;
@@ -150,12 +149,12 @@ class PostController extends Controller
                 ->addInput('text', 'post_content', ['id' => 'content', 'class' => 'validate'])
 
                 ->addLabelForm('post_image', 'image :')
-                ->addInputFiles()
+                ->addInputFiles('post_image')
 
-                ->addButton('Ajouter un nouveau post',['class' => 'btn waves-effect waves-light'])
+                ->addButton('Ajouter un nouveau post',['class' => 'add-post btn waves-effect waves-light'])
                 ->endForm();
 
-            $this->render('post/addPost', ['form' => $form->create()]);
+            $this->render('/post/addPost', ['form' => $form->create()]);
         }
     }
 
@@ -213,7 +212,7 @@ class PostController extends Controller
                 // On met à jour le post   
                 $postModif->update($post->id_post, $columnTarget);
 
-
+            
                 //On redirige
                 $_SESSION['message'] = "Votre post a été modifié avec succès";
                 header('Location: /post');
@@ -233,7 +232,7 @@ class PostController extends Controller
                 ->addInput('text', 'post_content', ['id' => 'content', 'class' => 'validate', 'value' => $post->post_content])
 
                 ->addLabelForm('post_image', 'image :')
-                ->addInputFiles()
+                ->addInputFiles('post_image')
 
                 ->addButton('mettre à jour le post',['class' => 'btn waves-effect waves-light'])
                 ->endForm();
@@ -268,4 +267,5 @@ class PostController extends Controller
             header('Location: /post');
         } 
     }
+
 }
