@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Core;
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -8,7 +9,8 @@ use PHPMailer\PHPMailer\Exception;
 
 class SendMail
 {
-    public static function sendmail(string $newUserMail, string $message, string $subject) {
+    public static function sendmail(string $newUserMail, string $message, string $subject)
+    {
 
         $mail = new PHPMailer(true);
 
@@ -36,13 +38,12 @@ class SendMail
             //Contenu
             $mail->isHTML(true);
             $mail->Subject = $subject;
-            $mail->Body = $message; 
+            $mail->Body = $message;
             // On envoie
             $mail->send();
             echo "<script type='text/javascript'>M.toast({html: 'Un lien de vérfication a été envoyé à .'$newUserMail'.'});</script>";
-
         } catch (Exception) {
             echo "Message non envoyé. Erreur: $mail->ErrorInfo";
         }
-   }
+    }
 }

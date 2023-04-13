@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 abstract class Controller
@@ -13,12 +14,12 @@ abstract class Controller
         // A partir de ce point toute sortie est conservée en mémoire
 
         // On crée le chemin vers la vue
-        require(ROOT.'/Views/'.$file.'.php');
+        require(ROOT . '/Views/' . $file . '.php');
 
         // Transfère le buffer dans $content
         $content = ob_get_clean();
 
         //Template de page
-        require(ROOT.'/Views/'.$template.'.php') ;
+        require(ROOT . '/Views/' . $template . '.php');
     }
 }

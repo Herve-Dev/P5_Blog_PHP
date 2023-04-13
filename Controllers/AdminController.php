@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\PostCommentModel;
@@ -15,7 +16,7 @@ class AdminController extends Controller
 
     public function managePost()
     {
-        if ($this->isAdmin()) { 
+        if ($this->isAdmin()) {
             $postModel = new PostModel;
             $post = $postModel->findAll();
             $this->render('admin/managePost', ['posts' => $post]);
@@ -24,7 +25,7 @@ class AdminController extends Controller
 
     public function manageComment()
     {
-        if ($this->isAdmin()) { 
+        if ($this->isAdmin()) {
             $commentModel = new PostCommentModel;
             $comment = $commentModel->findAll();
             $this->render('admin/manageComment', ['comments' => $comment]);
@@ -33,25 +34,25 @@ class AdminController extends Controller
 
     public function activeComment(int $idComment)
     {
-        if ($this->isAdmin()) { 
+        if ($this->isAdmin()) {
             $commentModel = new PostCommentModel;
             $commentArray = $commentModel->findById($idComment);
 
-                if ($commentArray) {
-                    $comment = $commentModel->hydrate($commentArray);
+            if ($commentArray) {
+                $comment = $commentModel->hydrate($commentArray);
 
-                    $comment->setComment_active($comment->getComment_active() ? 0 : 1);
+                $comment->setComment_active($comment->getComment_active() ? 0 : 1);
 
-                    $columnTarget = 'id_comment';
-                    $comment->update($idComment, $columnTarget);
+                $columnTarget = 'id_comment';
+                $comment->update($idComment, $columnTarget);
 
-                    $response = array(
-                        "activate" => "commentaire activé",
-                        "desactivate" => "commentaire désactivé"
-                    );
+                $response = array(
+                    "activate" => "commentaire activé",
+                    "desactivate" => "commentaire désactivé"
+                );
 
-                    echo json_encode($response);
-                }
+                echo json_encode($response);
+            }
         }
     }
 

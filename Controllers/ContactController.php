@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Form;
@@ -11,15 +12,15 @@ class ContactController extends Controller
         $form = new Form;
         $form->startForm()
             ->addLabelForm('email', 'E-mail :')
-            ->addInput('email', 'email', ['class' => 'validate' , 'id' => 'email'])
+            ->addInput('email', 'email', ['class' => 'validate', 'id' => 'email'])
             ->addLabelForm('message', 'Votre message :')
-            ->addTextarea('message', ['class' => 'materialize-textarea' , 'id' => 'textarea-contact'])
+            ->addTextarea('message', ['class' => 'materialize-textarea', 'id' => 'textarea-contact'])
             ->addButton("Envoyer", ['class' => 'btn waves-effect waves-light'])
             ->endForm();
 
         $this->render('/contact/contact', ['formMail' => $form->create()]);
 
-        if (Form::validate($_POST, ['email','message'])) {
+        if (Form::validate($_POST, ['email', 'message'])) {
             $message = strip_tags($_POST['message']);
             $emailUser = strip_tags($_POST['email']);
             $email = getenv('EMAIL_SMTP');
@@ -31,8 +32,6 @@ class ContactController extends Controller
             $_SESSION['message'] = "Votre message a été envoyer avec succès";
         } else {
             $_SESSION['error'] = "Une érreur c'est produite réessayer";
-        } 
+        }
     }
-
-    
 }

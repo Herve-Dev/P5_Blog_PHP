@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Core\Db;
@@ -64,13 +65,13 @@ class Model extends Db
         //On transforme le tableau "fields" en une chaine de caractères
         $fields_list = implode(', ', $fields);
         $QuestionMark_list = implode(', ', $QuestionMark);
-        
+
 
         //On exécute la requete 
         return $this->request('INSERT INTO ' . $this->table . ' (' . $fields_list . ') VALUES(' . $QuestionMark_list . ')', $values);
     }
 
-    public function update(int $id, string $columnDbTarget = "id" )
+    public function update(int $id, string $columnDbTarget = "id")
     {
         $fields = [];
         $values = [];
@@ -86,8 +87,8 @@ class Model extends Db
             }
         }
 
-        $values[] = $id; 
-        
+        $values[] = $id;
+
         //On transforme le tableau "fields" en une chaine de caractères
         $fields_list = implode(', ', $fields);
 

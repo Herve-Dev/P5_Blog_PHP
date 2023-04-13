@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Core\Form;
@@ -11,7 +12,7 @@ class ProfilController extends Controller
         $userModel = new UserModel;
         $user = $userModel->findById($idUser);
 
-        $this->render('user/profilUser',['user' => $user]);
+        $this->render('user/profilUser', ['user' => $user]);
     }
 
     public function updateProfil(int $idUser)
@@ -21,7 +22,7 @@ class ProfilController extends Controller
             if (Form::validate($_POST, ['biography'])) {
 
                 $biography = strip_tags($_POST['biography']);
-                
+
                 $user = new UserModel;
                 $user->setBiography($biography);
 
@@ -33,9 +34,9 @@ class ProfilController extends Controller
                     $folder = "image/avatar_image/$name";
 
                     if (!file_exists($folder)) {
-                       $tempname = $_FILES["avatar"]["tmp_name"];
-                       move_uploaded_file($tempname,$folder);
-                       $user->setAvatar($name);
+                        $tempname = $_FILES["avatar"]["tmp_name"];
+                        move_uploaded_file($tempname, $folder);
+                        $user->setAvatar($name);
                     }
                 }
 
@@ -43,21 +44,20 @@ class ProfilController extends Controller
                 header("Location: /Profil/profilUser/$idUser");
             }
 
-               
+
 
             $formProfil = new Form;
             $formProfil->startForm()
-            ->addLabelForm('avatar', 'Avatar :')
-            ->addInputFiles('avatar')
+                ->addLabelForm('avatar', 'Avatar :')
+                ->addInputFiles('avatar')
 
-            ->addLabelForm('biography', 'Biographie :')
-            ->addTextarea('biography')
+                ->addLabelForm('biography', 'Biographie :')
+                ->addTextarea('biography')
 
-            ->addButton('Mettre à jour mon profil',['class' => 'add-post btn waves-effect waves-light'])
-            ->endForm();
-        
+                ->addButton('Mettre à jour mon profil', ['class' => 'add-post btn waves-effect waves-light'])
+                ->endForm();
+
             $this->render('/user/updateProfil', ['formProfil' => $formProfil->create()]);
         }
-          
     }
 }

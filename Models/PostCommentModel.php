@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 class PostCommentModel extends Model
@@ -33,7 +34,7 @@ class PostCommentModel extends Model
 
     /**
      * Get the value of id_comment
-     */ 
+     */
     public function getId_comment()
     {
         return $this->id_comment;
@@ -43,7 +44,7 @@ class PostCommentModel extends Model
      * Set the value of id_comment
      *
      * @return  self
-     */ 
+     */
     public function setId_comment($id_comment)
     {
         $this->id_comment = $id_comment;
@@ -53,7 +54,7 @@ class PostCommentModel extends Model
 
     /**
      * Get the value of comment_content
-     */ 
+     */
     public function getComment_content()
     {
         return $this->comment_content;
@@ -63,7 +64,7 @@ class PostCommentModel extends Model
      * Set the value of comment_content
      *
      * @return  self
-     */ 
+     */
     public function setComment_content($comment_content)
     {
         $this->comment_content = $comment_content;
@@ -73,7 +74,7 @@ class PostCommentModel extends Model
 
     /**
      * Get the value of comment_active
-     */ 
+     */
     public function getComment_active()
     {
         return $this->comment_active;
@@ -83,7 +84,7 @@ class PostCommentModel extends Model
      * Set the value of comment_active
      *
      * @return  self
-     */ 
+     */
     public function setComment_active($comment_active)
     {
         $this->comment_active = $comment_active;
@@ -93,7 +94,7 @@ class PostCommentModel extends Model
 
     /**
      * Get the value of comment_createdAt
-     */ 
+     */
     public function getComment_createdAt()
     {
         return $this->comment_createdAt;
@@ -103,7 +104,7 @@ class PostCommentModel extends Model
      * Set the value of comment_createdAt
      *
      * @return  self
-     */ 
+     */
     public function setComment_createdAt($comment_createdAt)
     {
         $this->comment_createdAt = $comment_createdAt;
@@ -113,7 +114,7 @@ class PostCommentModel extends Model
 
     /**
      * Get the value of comment_updatedAt
-     */ 
+     */
     public function getComment_updatedAt()
     {
         return $this->comment_updatedAt;
@@ -123,7 +124,7 @@ class PostCommentModel extends Model
      * Set the value of comment_updatedAt
      *
      * @return  self
-     */ 
+     */
     public function setComment_updatedAt($comment_updatedAt)
     {
         $this->comment_updatedAt = $comment_updatedAt;
@@ -133,7 +134,7 @@ class PostCommentModel extends Model
 
     /**
      * Get the value of user_id
-     */ 
+     */
     public function getUser_id()
     {
         return $this->user_id;
@@ -143,7 +144,7 @@ class PostCommentModel extends Model
      * Set the value of user_id
      *
      * @return  self
-     */ 
+     */
     public function setUser_id($user_id)
     {
         $this->user_id = $user_id;
@@ -153,7 +154,7 @@ class PostCommentModel extends Model
 
     /**
      * Get the value of id_post
-     */ 
+     */
     public function getId_post()
     {
         return $this->id_post;
@@ -163,7 +164,7 @@ class PostCommentModel extends Model
      * Set the value of id_post
      *
      * @return  self
-     */ 
+     */
     public function setId_post($id_post)
     {
         $this->id_post = $id_post;

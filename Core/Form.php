@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Core;
 
 class Form
@@ -25,7 +26,7 @@ class Form
      */
     public static function validate(array $form, array $fields)
     {
-       
+
         // On parcourt les champs 
         foreach ($fields as $field) {
             // Si le champ est absent ou vide dans le formulaire 
@@ -49,18 +50,20 @@ class Form
         $str = '';
 
         // On liste les attributs "courts"
-        $shortAttributs = ['checked', 'disabled', 'readonly', 'multiple',
-        'required', 'autofocus', 'novalidate', 'formnovalidate'];
+        $shortAttributs = [
+            'checked', 'disabled', 'readonly', 'multiple',
+            'required', 'autofocus', 'novalidate', 'formnovalidate'
+        ];
 
         //On boucle sur le tableau d'attributs
-        foreach($attributs as $attribut => $value){
+        foreach ($attributs as $attribut => $value) {
             //Si l'attribut est dans la liste des attributs courts
             if (in_array($attribut, $shortAttributs) && $value === true) {
-                $str .=" $attribut";
-            }else {
+                $str .= " $attribut";
+            } else {
                 // On ajoute attribut='valeur'
                 // On ajoute les "" autour de la valeur pour les ' dans les values
-                $str .=" $attribut=\"$value\"";
+                $str .= " $attribut=\"$value\"";
             }
         }
 
@@ -81,8 +84,8 @@ class Form
         $this->formCode .= "<form action='$action' method='$method' enctype='$enctype'";
 
         //On ajoute les attributs éventuels
-        $this->formCode .= $attributs  ? $this->addAttributs($attributs).'>': '>';
-        
+        $this->formCode .= $attributs  ? $this->addAttributs($attributs) . '>' : '>';
+
         return $this;
     }
 
@@ -129,10 +132,10 @@ class Form
     public function addInput(string $type, string $name, array $attributs = []): self
     {
         // On ouvre la balise
-        $this->formCode .="<input type='$type' name='$name'";
+        $this->formCode .= "<input type='$type' name='$name'";
 
         // On ajoute les attributs
-        $this->formCode .= $attributs ? $this->addAttributs($attributs). '>' : '>';
+        $this->formCode .= $attributs ? $this->addAttributs($attributs) . '>' : '>';
 
         return $this;
     }
@@ -173,7 +176,7 @@ class Form
         $this->formCode .= "<select name='$name'";
 
         // On ajoute les attributs
-        $this->formCode .= $attributs ? $this->addAttributs($attributs).'>' : '>';
+        $this->formCode .= $attributs ? $this->addAttributs($attributs) . '>' : '>';
 
         // On ajoute les options
         foreach ($options as $value => $text) {
@@ -215,7 +218,7 @@ class Form
     public function addInputFiles(string $name)
     {
         $this->formCode .=
-        "<div class='file-field input-field'>
+            "<div class='file-field input-field'>
             <div class='btn'>
                 <span>Image</span>
                 <input type='file' id='image' name='$name'>
@@ -225,6 +228,6 @@ class Form
             </div>
         </div>";
 
-      return $this;
+        return $this;
     }
 }

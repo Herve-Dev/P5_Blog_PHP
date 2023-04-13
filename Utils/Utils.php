@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Utils;
 
 class Utils
@@ -25,12 +26,12 @@ class Utils
      *
      * @return string
      */
-    public static function encodeMailURL(string $email) 
+    public static function encodeMailURL(string $email)
     {
         //PENSEZ A METTRE UN TEMPS LIMITE POUR VALIDATION DU LIEN
-        $cryptParamUrl = openssl_encrypt($email,"AES-128-ECB", getenv('SECRET_KEY_OPENSSL'));
+        $cryptParamUrl = openssl_encrypt($email, "AES-128-ECB", getenv('SECRET_KEY_OPENSSL'));
         $base64Email = base64_encode($cryptParamUrl);
-        $base64replace = str_replace(['+', '=', '/'],[''], $base64Email);
+        $base64replace = str_replace(['+', '=', '/'], [''], $base64Email);
         return $base64replace;
     }
 
@@ -40,12 +41,12 @@ class Utils
                         <div class="col s12 m5">
                             <div class="card-panel teal">
                                 <span class="white-text">
-                                    '.$msg.'
+                                    ' . $msg . '
                                 </span>
                             </div>
                         </div>
                     </div>';
 
-        echo $message;            
+        echo $message;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Models\UserModel;
@@ -21,9 +22,9 @@ class EmailController extends Controller
             $userModel->updateAuthUser($decryptParamUrl);
             $this->render('email/index', [], 'default');
             header('Refresh: 5; /user/login');
-        }else {
+        } else {
             $_SESSION['error'] = "Une erreur est survenu";
             header('Location: /');
-        }  
+        }
     }
 }

@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Controllers;
 
 use App\Core\Form;
@@ -15,7 +16,7 @@ class PostCommentController extends Controller
         $comments = $postCommentModel->findAll();
 
         //On génère la vue
-        $this->render('comment/index', ['comments' => $comments ]);
+        $this->render('comment/index', ['comments' => $comments]);
     }
 
     public static function addComment(int $idPost)
@@ -54,10 +55,10 @@ class PostCommentController extends Controller
     {
         //On verifie si l'utilisateur est connecté
         if (AdminController::isUser()) {
-            
+
             //On va vérifier si le commentaire existe dans la base
             // On instancie notre modèle
-           $commentModel = new PostCommentModel;
+            $commentModel = new PostCommentModel;
 
             //On cherche le commentaire avec l'id
             $comment = $commentModel->findById($idComment);
@@ -92,19 +93,18 @@ class PostCommentController extends Controller
                 $_SESSION['message'] = "Votre post a été modifié avec succès";
                 header('Location: /post');
             }
-            
+
             $formUpdateComment = new Form;
 
             $formUpdateComment->startForm()
-                ->addLabelForm('comment_content','Commentaire :')
+                ->addLabelForm('comment_content', 'Commentaire :')
                 ->addInput('text', 'comment_content', ['id' => 'title', 'class' => 'validate', 'value' => $comment->comment_content])
 
-                ->addButton('mettre à jour mon commentaire',['class' => 'btn waves-effect waves-light'])
-                ->endForm();   
+                ->addButton('mettre à jour mon commentaire', ['class' => 'btn waves-effect waves-light'])
+                ->endForm();
             // On envoie à la vue 
             $this->render('comment/updateComment', ['form' => $formUpdateComment->create()]);
-
-        } 
+        }
     }
 
     public function deleteComment(int $idComment)
