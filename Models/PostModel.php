@@ -18,16 +18,22 @@ class PostModel extends Model
         $this->table = 'post';
     }
 
+    //Correction ordre decroissant
+    public function findAllPost() {
+        return $this->request("SELECT * FROM $this->table ORDER BY post_createdAt DESC")->fetchAll();
+    }
+
     public function findPostWithAuthor(int $id)
     {
         return $this->request("SELECT * FROM post LEFT JOIN user 
                             ON user.id = post.user_id WHERE post.id_post = ?", [$id])->fetch();
     }
 
+    //Correction ordre decroissant
     public function findPostWithComment(int $id)
     {
         return $this->request("SELECT * FROM comment LEFT JOIN user
-                            ON user.id = comment.user_id WHERE comment.id_post = ? AND comment.comment_active = 1", [$id])->fetchAll();
+                            ON user.id = comment.user_id WHERE comment.id_post = ? AND comment.comment_active = 1 ORDER BY comment_createdAt DESC;", [$id])->fetchAll();
     }
 
     public function findById(int $id)

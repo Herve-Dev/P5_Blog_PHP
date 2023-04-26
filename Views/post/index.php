@@ -13,7 +13,7 @@
                 </div>
                 <div class="card-action center-align">
                     <a href="post/read/<?= $post->id_post ?>">Lire l'article</a>
-                    <?php if ($_SESSION['user']['role'] === 'ADMIN') : ?>
+                    <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'ADMIN') : ?>
                         <a href="/post/deletePost/<?= $post->id_post ?>">Supprimez le post</a>
                         <a href="/post/updatePost/<?= $post->id_post ?>">mettre à jour le post</a>
                     <?php endif; ?>

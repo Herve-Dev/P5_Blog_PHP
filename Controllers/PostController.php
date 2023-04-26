@@ -16,11 +16,13 @@ class PostController extends Controller
      */
     public function index()
     {
+        
         // On instancie le modèle correspondant à la table "post"
         $postModel = new PostModel;
 
         //On va chercher touts les posts
-        $post = $postModel->findAll();
+        //Correction ordre decroissant
+        $post = $postModel->findAllPost(); 
 
         //On génère la vue
         $this->render('post/index', ['posts' => $post]);
@@ -48,7 +50,7 @@ class PostController extends Controller
             ->addLabelForm('comment_content', 'Votre commentaire :')
             ->addTextarea('comment_content', ['id' => 'comment', 'class' => 'validate'])
 
-            ->addButton('Ajouter un nouveau commentaire', ['class' => 'btn waves-effect waves-light'])
+            ->addButton('Ajouter un nouveau commentaire', ['class' => 'btn waves-effect waves-light btn-add-comment'])
             ->endForm();
         $formAddComment = $formComment->create();
 
@@ -131,9 +133,9 @@ class PostController extends Controller
                 $postModel->create();
 
                 //On redirige
-                $msg = "Votre post a été enregistré avec succès";
-                Utils::msgFlash($msg);
-                header('Refresh: 1; /post');
+                echo "<div class='bloc-msg-good'> Votre post a été enregistré avec succès </div>";
+                header("refresh:2; /post");
+                
             }
 
             $form = new Form;
@@ -214,8 +216,8 @@ class PostController extends Controller
 
 
                 //On redirige
-                $_SESSION['message'] = "Votre post a été modifié avec succès";
-                header('Location: /post');
+                echo "<div class='bloc-msg-good'> Votre post a été modifié avec succès </div>";
+                header("refresh:2; /post");
             }
 
             $form = new Form;
@@ -263,7 +265,8 @@ class PostController extends Controller
                 }
             }
             $postDelete->deleteWithComment($id);
-            header('Location: /post');
+            echo "<div class='bloc-msg-good'> Votre post a été supprimez avec succes </div>";
+            header("refresh:2; /post");
         }
     }
 }

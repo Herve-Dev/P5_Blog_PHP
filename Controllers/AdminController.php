@@ -18,7 +18,7 @@ class AdminController extends Controller
     {
         if ($this->isAdmin()) {
             $postModel = new PostModel;
-            $post = $postModel->findAll();
+            $post = $postModel->findAllPost();
             $this->render('admin/managePost', ['posts' => $post]);
         }
     }
@@ -27,7 +27,7 @@ class AdminController extends Controller
     {
         if ($this->isAdmin()) {
             $commentModel = new PostCommentModel;
-            $comment = $commentModel->findAll();
+            $comment = $commentModel->findAllComment();
             $this->render('admin/manageComment', ['comments' => $comment]);
         }
     }

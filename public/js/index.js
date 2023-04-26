@@ -47,9 +47,8 @@ function FormUpdateComment() {
 
 }
 
-function msgAddPost() {
-  M.toast({ html: '<p> Publication ajoutée avec succès </p>', classes: "green" })
-}
+console.log(document.querySelector('.bloc-msg'));
+
 
 
 

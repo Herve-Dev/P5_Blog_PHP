@@ -58,7 +58,7 @@ class Main
                     $controller->$action();
             } else {
                 http_response_code(404);
-                echo "La page recherchée n'existe pas";
+                header('Location: /error/index');
             }
         } else {
             //On à pas de paramètres

@@ -95,3 +95,55 @@ h3, h5, h1, h2 {
     width: 50%;
 }
 
+.bloc-item {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*justify-content: center;*/
+}
+
+.item-error {
+    width: 60%;
+    height: 60%;
+    margin-top: 70px;
+}
+
+.img-error {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.btn-back {
+    margin-top: 20px;
+}
+
+.bloc-msg-good {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 100px;
+    left: 50px;
+    position: absolute;
+    width: 400px;
+    height: 60px;
+    background-color: green;
+    color: white;
+}
+
+.bloc-msg-bad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 100px;
+    left: 50px;
+    position: absolute;
+    width: 400px;
+    height: 60px;
+    background-color: red;
+    color: white;
+}
+
+

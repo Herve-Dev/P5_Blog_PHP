@@ -13,7 +13,7 @@ class PostCommentController extends Controller
         $postCommentModel = new PostCommentModel;
 
         //On va chercher touts les commentaires
-        $comments = $postCommentModel->findAll();
+        $comments = $postCommentModel->findAllComment();
 
         //On génère la vue
         $this->render('comment/index', ['comments' => $comments]);
@@ -21,9 +21,6 @@ class PostCommentController extends Controller
 
     public static function addComment(int $idPost)
     {
-        //On vérifie si lutilisateur est connecté
-        if (AdminController::isUser()) {
-            //l'utilisateur est connecté
 
             if (Form::validate($_POST, ['comment_content'])) {
                 // Le formulaire est complet
@@ -45,16 +42,13 @@ class PostCommentController extends Controller
                 $postCommentModel->create();
 
                 //On redirige
-                $_SESSION['message'] = "Votre commentaire a été enregistré avec succès l'admin l'acceptera après modération";
-                header("Location: /post/read/$idPost");
+                echo "<div class='bloc-msg-good'> Votre commentaire a été enregistré avec succès l'admin l'acceptera après modération </div>";
+                header("refresh:2; /post/read/$idPost");
             }
-        }
     }
 
     public function updateComment(int $idComment)
     {
-        //On verifie si l'utilisateur est connecté
-        if (AdminController::isUser()) {
 
             //On va vérifier si le commentaire existe dans la base
             // On instancie notre modèle
@@ -74,8 +68,8 @@ class PostCommentController extends Controller
             $userSessionId = $_SESSION['user']['id'];
 
             if ($comment->user_id !== $userSessionId) {
-                $_SESSION['error'] = "Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource";
-                header('Location: /post');
+                echo "<div class='bloc-msg-bad'> Vous devez être connecté(e) pour accéder à cette page ou vous n'avez pas d'autorisation pour acceder à cette ressource </div>";
+                header("refresh:2; /post"); 
             }
 
             // On traite le formulaire 
@@ -90,8 +84,9 @@ class PostCommentController extends Controller
                 $commentModif->updateComment($idComment, $commentContent);
 
                 //On redirige
-                $_SESSION['message'] = "Votre post a été modifié avec succès";
-                header('Location: /post');
+                echo "<div class='bloc-msg-good'> Votre post a été modifié avec succès </div>";
+                header("refresh:2; /post");
+                
             }
 
             $formUpdateComment = new Form;
@@ -104,18 +99,17 @@ class PostCommentController extends Controller
                 ->endForm();
             // On envoie à la vue 
             $this->render('comment/updateComment', ['form' => $formUpdateComment->create()]);
-        }
     }
 
     public function deleteComment(int $idComment)
     {
-        //On verifie si l'utilisateur est connecté
-        if (AdminController::isUser()) {
-            $commentDelete = new PostCommentModel;
 
-            $commentDelete->deleteComment($idComment);
+        $commentDelete = new PostCommentModel;
 
-            header('Location: /post');
-        }
+        $commentDelete->deleteComment($idComment);
+
+        echo "<div class='bloc-msg-bad'> Votre post a été supprimez avec succes </div>";
+        header("refresh:2; /post");
+       
     }
 }

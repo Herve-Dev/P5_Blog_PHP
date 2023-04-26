@@ -11,6 +11,7 @@
         <p> crée le : <?= $post->post_createdAt ?></p><br>
         <p> Auteur : <?= $post->username ?></p>
       </div>
+      <?php if (isset($_SESSION['user']) && $_SESSION['user']['role']) : ?>
       <div class="card-action">
         <ul class="collapsible">
           <li>
@@ -22,12 +23,13 @@
             </div>
           </li>
         </ul>
-        <?php
+        
 
-        if ($_SESSION['user']['role'] === 'ADMIN') : ?>
+        <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'ADMIN') : ?>
           <a href="/post/deletePost/<?= $post->id_post ?>">Supprimez le post</a>
         <?php endif; ?>
       </div>
+      <?php endif; ?>
     </div>
   </div>
 </div>
@@ -40,9 +42,10 @@
           <div class="card-content white-text">
             <p id="comment-<?= $comment->id_comment ?>"> <?= $comment->comment_content ?></p>
             <p>Auteur du commentaire : <a href="/Profil/profilUser/<?= $comment->user_id ?>"> <?= $comment->username ?> </a></p>
+            <p>Crée le : <?= $comment->comment_createdAt ?> </p>
           </div>
           <div class="card-action">
-            <?php if ($comment->user_id === $_SESSION['user']['id']) : ?>
+            <?php if (isset($_SESSION['user']) && $comment->user_id === $_SESSION['user']['id']) : ?>
               <a href="/PostComment/deleteComment/<?= $comment->id_comment ?>">Supprimez mon commentaire</a>
               <a href="/PostComment/updateComment/<?= $comment->id_comment ?>">Mettre à jour mon commentaire</a>
               <ul class="collapsible collaps<?= $comment->id_comment ?>">
