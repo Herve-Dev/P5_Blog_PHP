@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Contenu</th>
+            <th>Date</th>
             <th>Actif</th>
             <th>Action</th>
         </tr>
@@ -11,6 +12,7 @@
         <?php foreach ($comments as $comment) : ?>
             <tr>
                 <td><?= $comment->comment_content ?></td>
+                <td><?= $comment->comment_createdAt ?></td>
                 <td class="td-comment-<?= $comment->id_comment ?>"><?= $comment->comment_active ?></td>
                 <td>
                     <div class="switch">

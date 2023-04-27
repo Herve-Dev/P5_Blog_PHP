@@ -23,6 +23,8 @@
             </div>
             </li>
         <?php else : ?>
+            <li><a href="/">Acceuil</a></li>
+            <li><a href="/post">Publications</a></li>
             <li><a href="/user/register">S'inscrire</a></li>
             <li><a href="/user/login">Se connecter</a></li>
         <?php endif; ?>

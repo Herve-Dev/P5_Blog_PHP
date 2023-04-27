@@ -29,9 +29,11 @@ class ContactController extends Controller
             $sendMail = new SendMail;
             $sendMail->sendmail($email, $message, $subject);
 
-            $_SESSION['message'] = "Votre message a été envoyer avec succès";
+            echo "<div class='bloc-msg-good'> Votre message a été envoyé avec succes </div>";
+            header("refresh:2; /");
         } else {
-            $_SESSION['error'] = "Une érreur c'est produite réessayer";
+            echo "<div class='bloc-msg-bad'> une erreur est survenue </div>";
+            header("refresh:2; /");
         }
     }
 }

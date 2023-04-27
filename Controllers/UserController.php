@@ -27,8 +27,8 @@ class UserController extends Controller
             //Si l'utilisateur n'existe pas 
             if (!$userArray) {
                 // On envoie un message de session
-                $_SESSION['error'] = "l'adresse e-mail et/ou le mot de passe est incorrect";
-                header('Location: /user/login');
+                echo "<div class='bloc-msg-bad'> l'adresse e-mail et/ou le mot de passe est incorrect </div>";
+                header('refresh:2; /user/login');
             }
 
             // L'utilisateur existe
@@ -39,11 +39,14 @@ class UserController extends Controller
                 //Le mot de passe est bon 
                 // On crée la session
                 $user->setSession();
-                header('Location: /');
+
+                echo "<div class='bloc-msg-good'> Connexion reussie </div>";
+                header("refresh:1; /");
+                
             } else {
                 // Mauvais mot de passe 
-                $_SESSION['error'] = "l'adresse e-mail et/ou le mot de passe est incorrect";
-                header('Location: /user/login');
+                echo "<div class='bloc-msg-bad'> l'adresse e-mail et/ou le mot de passe est incorrect </div>";
+                header('refresh:2; /user/login');
             }
         }
 
@@ -55,8 +58,8 @@ class UserController extends Controller
             ->addLabelForm('email', 'E-mail :')
             ->addInput('email', 'email', ['class' => 'form-control', 'id' => 'email'])
             ->addLabelForm('password', 'Mot de passe')
-            ->addInput('password', 'password', ['id' => 'password', 'class' => 'form-control'])
-            ->addButton('me connecter', ['class' => 'btn btn-primary'])
+            ->addInput('password', 'password', ['id' => 'password', 'class' => 'form-control' , 'autocomplete' => 'off'])
+            ->addButton('me connecter', ['class' => 'btn btn-primary btn-login'])
             ->endForm();
 
         $this->render('user/login', ['loginForm' => $form->create()]);
@@ -64,6 +67,7 @@ class UserController extends Controller
 
     public function register()
     {
+        
         $form = new Form;
         $form->startForm()
             ->addLabelForm('username', 'Pseudo :')
@@ -78,7 +82,7 @@ class UserController extends Controller
             ->addLabelForm('confirmPassword', ' Confirmer votre Mot de passe :')
             ->addInput('password', 'confirmPassword', ['id' => 'confirmPassword', 'class' => 'validate'])
 
-            ->addButton("m'inscrire", ['class' => 'btn waves-effect waves-light'])
+            ->addButton("m'inscrire", ['class' => 'btn waves-effect waves-light', 'id' => 'btn-register'])
             ->endForm();
 
         $this->render('/user/register', ['registerForm' => $form->create()]);
@@ -124,6 +128,8 @@ class UserController extends Controller
 
                 $sendMail = new SendMail;
                 $sendMail->sendmail($email, $message, $subject);
+                echo "<div class='bloc-msg-good'> inscription reussie verifier votre email </div>";
+                header("refresh:2; /user/login");
             }
         }
     }
@@ -141,47 +147,55 @@ class UserController extends Controller
 
     public function updatePassword(int $id_user)
     {
-        $userModel = new UserModel;
-        $findUser = $userModel->find($id_user);
+        //protection route correction 
+        if (isset($_SESSION['user']) && $_SESSION['user']['id'] === $id_user ) {
+            # code...
+        
+            $userModel = new UserModel;
+            $findUser = $userModel->find($id_user);
 
-        if ($findUser) {
-            $form = new Form;
-            $form->startForm()
-                ->addLabelForm('password', 'Votre ancien mot de passe :')
-                ->addInput('password', 'old-password', ['id' => 'password', 'class' => 'validate'])
+            if ($findUser) {
+                $form = new Form;
+                $form->startForm()
+                    ->addLabelForm('password', 'Votre ancien mot de passe :')
+                    ->addInput('password', 'old-password', ['id' => 'password', 'class' => 'validate'])
 
-                ->addLabelForm('password', 'Votre nouveau mot de passe :')
-                ->addInput('password', 'new-password', ['id' => 'password', 'class' => 'validate'])
+                    ->addLabelForm('password', 'Votre nouveau mot de passe :')
+                    ->addInput('password', 'new-password', ['id' => 'password', 'class' => 'validate'])
 
-                ->addLabelForm('confirmPassword', ' Confirmer votre Mot de passe :')
-                ->addInput('password', 'confirm-password', ['id' => 'confirmPassword', 'class' => 'validate'])
+                    ->addLabelForm('confirmPassword', ' Confirmer votre Mot de passe :')
+                    ->addInput('password', 'confirm-password', ['id' => 'confirmPassword', 'class' => 'validate'])
 
-                ->addButton("modifier mon mot de passe", ['class' => 'btn waves-effect waves-light'])
-                ->endForm();
-            $this->render('/user/updatePassword', ['formUpdatePass' => $form->create()]);
+                    ->addButton("modifier mon mot de passe", ['class' => 'btn waves-effect waves-light'])
+                    ->endForm();
+                $this->render('/user/updatePassword', ['formUpdatePass' => $form->create()]);
 
-            if (Form::validate($_POST, ['old-password', 'new-password', 'confirm-password'])) {
-                $oldPass = strip_tags($_POST['old-password']);
-                $newPass = strip_tags($_POST['new-password']);
-                $confirmPass = strip_tags($_POST['confirm-password']);
+                if (Form::validate($_POST, ['old-password', 'new-password', 'confirm-password'])) {
+                    $oldPass = strip_tags($_POST['old-password']);
+                    $newPass = strip_tags($_POST['new-password']);
+                    $confirmPass = strip_tags($_POST['confirm-password']);
 
-                $user = $userModel->hydrate($findUser);
+                    $user = $userModel->hydrate($findUser);
 
-                if (password_verify($oldPass, $user->getPassword())) {
-                    $comparePass = new Utils;
-                    $passHash = $comparePass->comparePass($newPass, $confirmPass);
+                    if (password_verify($oldPass, $user->getPassword())) {
+                        $comparePass = new Utils;
+                        $passHash = $comparePass->comparePass($newPass, $confirmPass);
 
-                    if ($passHash === false) {
-                        return $passHash;
-                    } else {
-                        $user->setPassword($passHash);
-                        $user->update($findUser->id);
-                        $_SESSION['message'] = 'Votre mot de passe a été modifier avec succes';
+                        if ($passHash === false) {
+                            return $passHash;
+                        } else {
+                            $user->setPassword($passHash);
+                            $user->update($findUser->id);
+                            echo "<div class='bloc-msg-good'> Votre mot de passe a été modifier avec succes </div>";
+                            
+                        }
                     }
                 }
+            } else {
+                $_SESSION['error'] = "Une erreur est survenue";
+                header('Location: /');
             }
         } else {
-            $_SESSION['error'] = "Une erreur est survenue";
             header('Location: /');
         }
     }
@@ -255,8 +269,8 @@ class UserController extends Controller
                 } else {
                     $user->setPassword($passHash);
                     $user->update($findUser->id);
-                    $_SESSION['message'] = 'Votre mot de passe a été modifier avec succes';
-                    header('Location : /user/login');
+                    echo "<div class='bloc-msg-good'> Votre mot de passe a été modifier avec succes </div>";
+                    header("refresh:2; /user/login");
                 }
             }
         }

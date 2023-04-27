@@ -46,7 +46,6 @@ export default class Form {
           let newData = document.getElementById(`update-input${dataset}`).value;
           let comment = document.getElementById(`comment-${dataset}`);
           comment.textContent = newData;
-
            
           const formDelete = document.getElementById(`form-js${dataset}`).remove() 
           var elems = document.querySelector(`.collaps${dataset}`);

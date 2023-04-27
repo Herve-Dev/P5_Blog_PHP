@@ -17,6 +17,11 @@ class PostCommentModel extends Model
         $this->table = 'comment';
     }
 
+    //Correction ordre decroissant
+    public function findAllComment() {
+        return $this->request("SELECT * FROM $this->table ORDER BY comment_createdAt DESC")->fetchAll();
+    }
+
     public function findById($idComment)
     {
         return $this->request("SELECT * FROM comment WHERE id_comment = $idComment")->fetch();

@@ -53,6 +53,8 @@
 
                 <?php else : ?>
 
+                    <li><a href="/">Acceuil</a></li>
+                    <li><a href="/post">Publications</a></li>
                     <li><a href="/user/register">S'inscrire</a></li>
                     <li><a href="/user/login">Se connecter</a></li>
 
@@ -94,6 +96,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="/js/index.js" type="module"></script>
     <script src="/js/comment.js"></script>
+    <script src="/js/form-login.js"></script>
 </body>
 
 </html>
